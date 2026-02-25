@@ -6,7 +6,9 @@ import { BreakSession } from "@/components/break-session"
 import { ReportScreen } from "@/components/report-screen"
 import { PaywallScreen } from "@/components/paywall-screen"
 import { SettingsScreen } from "@/components/settings-screen"
+import { AuthScreen } from "@/components/auth-screen"
 import { BottomNav, type Screen } from "@/components/bottom-nav"
+import { AuthProvider, useAuth } from "@/src/context/AuthContext"
 import { SubscriptionProvider, useSubscription } from "@/src/context/SubscriptionContext"
 import { createExerciseLog } from "@/src/domain/logging"
 import type { ExerciseLogRecord } from "@/src/types/schema"
@@ -28,6 +30,19 @@ function HomeContent() {
   const [exerciseLogs, setExerciseLogs] = useState<ExerciseLogRecord[]>([])
   const [completionMessage, setCompletionMessage] = useState<string | null>(null)
   const { subscription, purchasePlan } = useSubscription()
+  const { user, loading } = useAuth()
+
+  if (loading) {
+    return (
+      <main className="mx-auto flex min-h-screen max-w-md items-center justify-center bg-background">
+        <p className="text-sm text-muted-foreground">ログイン状態を確認中...</p>
+      </main>
+    )
+  }
+
+  if (!user) {
+    return <AuthScreen />
+  }
 
   const handleBreakStart = useCallback((payload: BreakPayload) => {
     setBreakPayload(payload)
@@ -121,8 +136,10 @@ function HomeContent() {
 
 export default function Home() {
   return (
-    <SubscriptionProvider>
-      <HomeContent />
-    </SubscriptionProvider>
+    <AuthProvider>
+      <SubscriptionProvider>
+        <HomeContent />
+      </SubscriptionProvider>
+    </AuthProvider>
   )
 }

@@ -12,11 +12,16 @@ import {
   resolveProAccess,
   type SubscriptionState,
 } from "../domain/subscription";
+import {
+  getCumulativeRecoveryMinutesFromStorage,
+  scheduleTrialMilestoneNotifications,
+} from "../services/notificationService";
 
 export type BillingPlan = "monthly" | "yearly" | "lifetime";
 
 export interface SubscriptionContextValue {
   subscription: SubscriptionState;
+  trialStartDate: string;
   isProUnlocked: boolean;
   trialDaysRemaining: number;
   trialEndsAt: string;
@@ -42,12 +47,31 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
   );
 
   useEffect(() => {
-    // TODO: Connect with storage layer and IAP receipt verification.
+    // TODO: Connect with IAP receipt verification.
   }, []);
+
+  useEffect(() => {
+    const schedule = () => {
+      const cumulativeRecoveryMinutes = getCumulativeRecoveryMinutesFromStorage();
+      scheduleTrialMilestoneNotifications({
+        trialStartDate: subscription.firstLaunchAt,
+        cumulativeRecoveryMinutes,
+      });
+    };
+
+    schedule();
+    window.addEventListener("storage", schedule);
+    window.addEventListener("focus", schedule);
+    return () => {
+      window.removeEventListener("storage", schedule);
+      window.removeEventListener("focus", schedule);
+    };
+  }, [subscription.firstLaunchAt]);
 
   const value = useMemo<SubscriptionContextValue>(
     () => ({
       subscription,
+      trialStartDate: subscription.firstLaunchAt,
       isProUnlocked,
       trialDaysRemaining: trialStatus.daysRemaining,
       trialEndsAt: trialStatus.trialEndsAt,
@@ -58,7 +82,12 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
         setSubscription((prev) => ({ ...prev, isProUser: true }));
       },
     }),
-    [subscription, isProUnlocked, trialStatus.daysRemaining, trialStatus.trialEndsAt]
+    [
+      subscription,
+      isProUnlocked,
+      trialStatus.daysRemaining,
+      trialStatus.trialEndsAt,
+    ]
   );
 
   return (
