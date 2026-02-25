@@ -52,11 +52,15 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const schedule = () => {
-      const cumulativeRecoveryMinutes = getCumulativeRecoveryMinutesFromStorage();
-      scheduleTrialMilestoneNotifications({
-        trialStartDate: subscription.firstLaunchAt,
-        cumulativeRecoveryMinutes,
-      });
+      try {
+        const cumulativeRecoveryMinutes = getCumulativeRecoveryMinutesFromStorage();
+        scheduleTrialMilestoneNotifications({
+          trialStartDate: subscription.firstLaunchAt,
+          cumulativeRecoveryMinutes,
+        });
+      } catch {
+        // Avoid breaking app boot from notification side effects.
+      }
     };
 
     schedule();

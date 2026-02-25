@@ -35,21 +35,25 @@ class BrowserNotificationScheduler implements NotificationScheduler {
   }
 
   private fire(payload: NotificationPayload) {
-    if (!("Notification" in window)) {
-      return;
-    }
+    try {
+      if (!("Notification" in window)) {
+        return;
+      }
 
-    if (Notification.permission === "granted") {
-      new Notification(payload.title, { body: payload.body });
-      return;
-    }
+      if (Notification.permission === "granted") {
+        new Notification(payload.title, { body: payload.body });
+        return;
+      }
 
-    if (Notification.permission === "default") {
-      Notification.requestPermission().then((permission) => {
-        if (permission === "granted") {
-          new Notification(payload.title, { body: payload.body });
-        }
-      });
+      if (Notification.permission === "default") {
+        Notification.requestPermission().then((permission) => {
+          if (permission === "granted") {
+            new Notification(payload.title, { body: payload.body });
+          }
+        });
+      }
+    } catch {
+      // Ignore notification runtime errors to avoid crashing UI.
     }
   }
 }
@@ -60,7 +64,12 @@ function getScheduledCache(): Record<string, string> {
   if (typeof window === "undefined") {
     return {};
   }
-  const raw = window.localStorage.getItem(NOTIFICATION_CACHE_KEY);
+  let raw: string | null = null;
+  try {
+    raw = window.localStorage.getItem(NOTIFICATION_CACHE_KEY);
+  } catch {
+    return {};
+  }
   if (!raw) {
     return {};
   }
@@ -75,7 +84,11 @@ function setScheduledCache(next: Record<string, string>) {
   if (typeof window === "undefined") {
     return;
   }
-  window.localStorage.setItem(NOTIFICATION_CACHE_KEY, JSON.stringify(next));
+  try {
+    window.localStorage.setItem(NOTIFICATION_CACHE_KEY, JSON.stringify(next));
+  } catch {
+    // Ignore write failures (e.g. private mode restrictions).
+  }
 }
 
 function buildNotificationBody(day: number, recoveryMinutes: number): string {
@@ -87,7 +100,12 @@ export function getCumulativeRecoveryMinutesFromStorage(): number {
     return 0;
   }
 
-  const raw = window.localStorage.getItem("dekcize.exerciseLogs");
+  let raw: string | null = null;
+  try {
+    raw = window.localStorage.getItem("dekcize.exerciseLogs");
+  } catch {
+    return 0;
+  }
   if (!raw) {
     return 0;
   }
