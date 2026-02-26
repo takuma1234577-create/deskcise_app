@@ -1,101 +1,151 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState } from "react"
-import Lottie, { type LottieRefCurrentProps } from "lottie-react"
-import { Loader2, Pause, Play } from "lucide-react"
-
-const LOTTIE_FILE_PATH = "/animations/Step Up On Chair.json"
+import Image from "next/image"
+import { useEffect, useMemo, useState } from "react"
+import { Pause, Play, Presentation } from "lucide-react"
 
 export function ExerciseAnimation() {
-  const lottieRef = useRef<LottieRefCurrentProps>(null)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [animationData, setAnimationData] = useState<object | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [loadError, setLoadError] = useState<string | null>(null)
-
-  const encodedPath = useMemo(() => encodeURI(LOTTIE_FILE_PATH), [])
-
-  useEffect(() => {
-    const controller = new AbortController()
-
-    const loadAnimation = async () => {
-      try {
-        setIsLoading(true)
-        setLoadError(null)
-        const response = await fetch(encodedPath, {
-          signal: controller.signal,
-          headers: { Accept: "application/json" },
-        })
-        if (!response.ok) {
-          throw new Error("Lottieファイルが見つかりません")
-        }
-        const json = (await response.json()) as object
-        setAnimationData(json)
-      } catch (error) {
-        if (controller.signal.aborted) return
-        setLoadError(error instanceof Error ? error.message : "読み込みに失敗しました")
-      } finally {
-        if (!controller.signal.aborted) {
-          setIsLoading(false)
-        }
-      }
-    }
-
-    void loadAnimation()
-    return () => controller.abort()
-  }, [encodedPath])
+  const totalSeconds = 60
+  const [timeLeft, setTimeLeft] = useState(totalSeconds)
+  const [isRunning, setIsRunning] = useState(false)
+  const [meetingMode, setMeetingMode] = useState(false)
+  const progress = (totalSeconds - timeLeft) / totalSeconds
+  const circumference = 2 * Math.PI * 72
 
   useEffect(() => {
-    if (!animationData) return
-    if (isPlaying) {
-      lottieRef.current?.play()
-    } else {
-      lottieRef.current?.pause()
+    if (!isRunning || meetingMode) {
+      return
     }
-  }, [isPlaying, animationData])
+    const id = window.setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          window.clearInterval(id)
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+    return () => window.clearInterval(id)
+  }, [isRunning, meetingMode])
+
+  useEffect(() => {
+    if (timeLeft === 0) {
+      setIsRunning(false)
+    }
+  }, [timeLeft])
+
+  const instructionLabel = useMemo(() => {
+    if (meetingMode) {
+      return "ミーティング中：運動を一時停止"
+    }
+    if (!isRunning) {
+      return "開始前：姿勢を整える"
+    }
+    return timeLeft > totalSeconds / 2 ? "足を上げる" : "足を上げてキープ"
+  }, [meetingMode, isRunning, timeLeft])
 
   return (
-    <section className="w-full rounded-2xl border border-[#2E5FA2] bg-gradient-to-b from-[#122C52] to-[#0F172A] p-4">
+    <section className="relative w-full overflow-hidden rounded-2xl border border-[#2E5FA2] bg-gradient-to-b from-[#122C52] to-[#0F172A] p-4">
       <h3 className="text-sm font-semibold text-white">Step Up On Chair</h3>
-      <p className="mt-1 text-xs text-white/70">運動開始ボタンと連動して再生/停止できます</p>
+      <p className="mt-1 text-xs text-white/70">静止画ガイド + インジケーターでフォーム確認</p>
 
-      <div className="relative mt-3 overflow-hidden rounded-2xl border border-[#355E93] bg-[#0D1E38] p-2">
-        <div className="pointer-events-none absolute inset-0 rounded-2xl shadow-[inset_0_0_0_1px_rgba(249,115,22,0.45),0_0_20px_rgba(249,115,22,0.22)]" />
-        <div className="relative flex h-[340px] w-full items-center justify-center rounded-xl bg-[#0B172D]">
-          {isLoading ? (
-            <div className="flex flex-col items-center gap-2 text-[#F97316]">
-              <Loader2 className="h-8 w-8 animate-spin" />
-              <p className="text-xs text-white/70">アニメーションを読み込み中...</p>
-            </div>
-          ) : loadError ? (
-            <div className="px-4 text-center">
-              <p className="text-sm font-semibold text-[#FDBA74]">読み込みエラー</p>
-              <p className="mt-1 text-xs text-white/70">{loadError}</p>
-            </div>
-          ) : (
-            animationData && (
-              <Lottie
-                lottieRef={lottieRef}
-                animationData={animationData}
-                loop
-                autoplay={false}
-                rendererSettings={{ preserveAspectRatio: "xMidYMid slice" }}
-                className="h-full w-full"
+      <div className="mt-3 rounded-2xl border border-[#355E93] bg-[#0D1E38] p-3">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+          <div className="overflow-hidden rounded-xl border border-[#2B4C78] bg-[#0B172D]">
+            <div className="px-3 py-2 text-[11px] font-semibold text-[#FDBA74]">開始フォーム</div>
+            <div className="relative h-44 w-full">
+              <Image
+                src="/placeholder-user.jpg"
+                alt="開始フォーム"
+                fill
+                className="object-cover"
               />
-            )
-          )}
+            </div>
+          </div>
+          <div className="overflow-hidden rounded-xl border border-[#2B4C78] bg-[#0B172D]">
+            <div className="px-3 py-2 text-[11px] font-semibold text-[#FDBA74]">終了フォーム</div>
+            <div className="relative h-44 w-full">
+              <Image
+                src="/placeholder.jpg"
+                alt="終了フォーム"
+                fill
+                className="object-cover"
+              />
+            </div>
+          </div>
         </div>
       </div>
 
-      <button
-        type="button"
-        onClick={() => setIsPlaying((prev) => !prev)}
-        disabled={isLoading || !!loadError || !animationData}
-        className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-[#F97316] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#FB923C] disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-        {isPlaying ? "停止" : "運動開始"}
-      </button>
+      <div className="mt-4 flex flex-col items-center">
+        <span className="rounded-full border border-[#F97316]/60 bg-[#F97316]/15 px-4 py-1 text-sm font-semibold text-[#FDBA74]">
+          {instructionLabel}
+        </span>
+        <div className="relative mt-3 flex h-44 w-44 items-center justify-center">
+          <svg width="180" height="180" viewBox="0 0 180 180" className="-rotate-90">
+            <circle cx="90" cy="90" r="72" fill="none" stroke="#233A5F" strokeWidth="10" />
+            <circle
+              cx="90"
+              cy="90"
+              r="72"
+              fill="none"
+              stroke="#F97316"
+              strokeWidth="10"
+              strokeLinecap="round"
+              strokeDasharray={circumference}
+              strokeDashoffset={circumference - progress * circumference}
+              style={{ filter: "drop-shadow(0 0 10px rgba(249,115,22,0.45))" }}
+            />
+          </svg>
+          <div className="absolute inset-0 grid place-items-center">
+            <p className="text-5xl font-bold tabular-nums text-white">{timeLeft}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-3 flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={() => setIsRunning((prev) => !prev)}
+          disabled={meetingMode || timeLeft === 0}
+          className="inline-flex items-center gap-1.5 rounded-lg bg-[#F97316] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#FB923C] disabled:opacity-50"
+        >
+          {isRunning ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+          {isRunning ? "一時停止" : "開始"}
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setTimeLeft(totalSeconds)
+            setIsRunning(false)
+            setMeetingMode(false)
+          }}
+          className="rounded-lg border border-[#3C6397] bg-[#122A4A] px-4 py-2 text-sm font-medium text-white/85"
+        >
+          リセット
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setMeetingMode((prev) => !prev)
+            setIsRunning(false)
+          }}
+          className="inline-flex items-center gap-1.5 rounded-lg border border-[#F97316]/60 bg-[#F97316]/15 px-4 py-2 text-sm font-semibold text-[#FDBA74]"
+        >
+          <Presentation className="h-4 w-4" />
+          ミーティングモード
+        </button>
+      </div>
+
+      {meetingMode && (
+        <div className="absolute inset-0 z-10 grid place-items-center bg-[#020617]/80 backdrop-blur-[1px]">
+          <div className="text-center">
+            <p className="text-4xl font-black tracking-[0.18em] text-white/95">PAUSED</p>
+            <p className="mt-2 text-sm font-semibold tracking-[0.28em] text-[#FDBA74]">
+              MEETING MODE
+            </p>
+          </div>
+        </div>
+      )}
     </section>
   )
 }

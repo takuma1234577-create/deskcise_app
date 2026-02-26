@@ -1,7 +1,7 @@
 "use client"
 
 import { Sparkles, Target, Timer } from "lucide-react"
-import { LottiePlayer } from "@/components/LottiePlayer"
+import { ExerciseAnimation } from "@/components/ExerciseAnimation"
 
 export function StepUpOnChairContent() {
   return (
@@ -10,15 +10,15 @@ export function StepUpOnChairContent() {
         <h3 className="text-sm font-semibold text-white">プレミアムフォームガイド</h3>
         <span className="inline-flex items-center gap-1 rounded-full bg-[#0F172A] px-2 py-1 text-[10px] text-[#FDBA74]">
           <Sparkles className="h-3 w-3" />
-          Lottie
+          Static Pro View
         </span>
       </div>
       <p className="mt-1 text-xs text-white/70">
-        Step Up On Chair の正確なフォームを、滑らかなモーションで確認できます。
+        開始/終了フォームとタイマーインジケーターで、集中を切らさずフォーム確認できます。
       </p>
 
       <div className="mt-3">
-        <LottiePlayer exerciseId="step-up-on-chair" />
+        <ExerciseAnimation />
       </div>
 
       <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
