@@ -1,5 +1,7 @@
 "use client"
 
+import { BrandLogo } from "@/components/BrandLogo"
+
 interface TrialOfferScreenProps {
   onStartTrial: () => void
   onSkip: () => void
@@ -9,9 +11,7 @@ export function TrialOfferScreen({ onStartTrial, onSkip }: TrialOfferScreenProps
   return (
     <main className="mx-auto flex min-h-screen max-w-md items-center px-4">
       <section className="w-full rounded-2xl border border-orange/30 bg-secondary p-5">
-        <p className="text-xs font-semibold uppercase tracking-wider text-orange">
-          DEKCIZE 22
-        </p>
+        <BrandLogo wordmarkClassName="text-base" markClassName="h-8 w-8" />
         <h1 className="mt-2 text-xl font-bold text-foreground">
           14日間のプロ版を開始しますか？
         </h1>

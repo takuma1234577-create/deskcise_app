@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* DEKCIZE Dark Theme - always dark */
+  /* DEKCISE Dark Theme - always dark */
   --background: #0F2747;
   --foreground: #F2F6FF;
   --card: #16345F;

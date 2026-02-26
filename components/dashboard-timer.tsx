@@ -5,6 +5,8 @@ import { Play, Pause, RotateCcw, Monitor, Maximize2, Minimize2 } from "lucide-re
 import { useLifeBuyback } from "@/src/hooks/useLifeBuyback"
 import { predictLifeLossFromSitting } from "@/src/features/life-buyback/engine/lifeBuybackEngine"
 import type { LifeBuybackMenuType } from "@/src/features/life-buyback"
+import { TrainingMenu } from "@/components/TrainingMenu"
+import { BrandLogo } from "@/components/BrandLogo"
 
 type DeskSpace = "narrow" | "normal" | "wide"
 type Posture = "sitting" | "standing"
@@ -111,7 +113,7 @@ export function DashboardTimer({ onBreakStart, onRequirePro, isProUser }: Dashbo
       {/* Header */}
       <div className="w-full flex items-center justify-between py-4">
         <div>
-          <h1 className="text-lg font-semibold tracking-tight text-orange">DEKCIZE 22</h1>
+          <BrandLogo />
           <p className="text-xs text-muted-foreground">{'\u96C6\u4E2D\u30BB\u30C3\u30B7\u30E7\u30F3'}</p>
         </div>
         <div className={`flex items-center gap-2 rounded-full px-3 py-1.5 ${statusClassName}`}>
@@ -299,6 +301,8 @@ export function DashboardTimer({ onBreakStart, onRequirePro, isProUser }: Dashbo
 {'\u9577\u6642\u9593\u306E\u5EA7\u4F4D\u306F\u8840\u6D41\u3092\u4F4E\u4E0B\u3055\u305B\u307E\u3059\u300225\u5206\u306E\u30BB\u30C3\u30B7\u30E7\u30F3\u3067\u7D04\uFF19\u5206\u306E\u30EA\u30B9\u30AF\u304C\u84C4\u7A4D\u3055\u308C\u307E\u3059\u3002'}
         </p>
       </div>
+
+      <TrainingMenu />
     </div>
   )
 }

@@ -11,7 +11,7 @@ export function PaywallScreen({
 }: PaywallScreenProps) {
   return (
     <section className="rounded-2xl border border-[#F47B2A]/25 bg-[#173A6A] p-6 text-white">
-      <h2 className="text-xl font-semibold">DEKCIZE Pro</h2>
+      <h2 className="text-xl font-semibold">DEKCISE Pro</h2>
       <p className="mt-2 text-sm text-white/80">
         立ちメニューと詳細レポートを開放して寿命バイバック効率を最大化します。
       </p>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useAuth } from "@/src/context/AuthContext";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export function AuthScreen() {
   const {
@@ -62,9 +63,9 @@ export function AuthScreen() {
   return (
     <main className="mx-auto flex min-h-screen max-w-md items-center px-4">
       <div className="w-full rounded-xl border border-border bg-secondary p-4">
-        <h1 className="text-lg font-semibold text-orange">DEKCIZE ログイン</h1>
+        <BrandLogo />
         <p className="mt-1 text-xs text-muted-foreground">
-          Firebase認証
+          DEKCISE ログイン
         </p>
 
         <div className="mt-4 space-y-3">

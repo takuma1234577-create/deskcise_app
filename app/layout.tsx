@@ -7,7 +7,7 @@ const _inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const _geistMono = Geist_Mono({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "DEKCIZE - 寿命リカバリー・ポモドーロ",
+  title: "DEKCISE - 寿命リカバリー・ポモドーロ",
   description: "25分のデスクワークで失う22分の寿命を、1分の運動で取り戻す。",
   generator: 'v0.app',
   icons: {
