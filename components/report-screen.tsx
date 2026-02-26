@@ -22,30 +22,30 @@ import { Disclaimer } from "@/src/components/legal/Disclaimer"
 type Period = "weekly" | "monthly"
 
 const weeklyData = [
-  { day: "\u6708", gained: 44, lost: 18 },
-  { day: "\u706B", gained: 66, lost: 27 },
-  { day: "\u6C34", gained: 22, lost: 36 },
-  { day: "\u6728", gained: 88, lost: 18 },
-  { day: "\u91D1", gained: 44, lost: 27 },
-  { day: "\u571F", gained: 22, lost: 9 },
+  { day: "\u6708", gained: 0, lost: 0 },
+  { day: "\u706B", gained: 0, lost: 0 },
+  { day: "\u6C34", gained: 0, lost: 0 },
+  { day: "\u6728", gained: 0, lost: 0 },
+  { day: "\u91D1", gained: 0, lost: 0 },
+  { day: "\u571F", gained: 0, lost: 0 },
   { day: "\u65E5", gained: 0, lost: 0 },
 ]
 
 const monthlyData = [
-  { week: "1\u9031", gained: 198, lost: 108 },
-  { week: "2\u9031", gained: 264, lost: 90 },
-  { week: "3\u9031", gained: 220, lost: 135 },
-  { week: "4\u9031", gained: 308, lost: 99 },
+  { week: "1\u9031", gained: 0, lost: 0 },
+  { week: "2\u9031", gained: 0, lost: 0 },
+  { week: "3\u9031", gained: 0, lost: 0 },
+  { week: "4\u9031", gained: 0, lost: 0 },
 ]
 
 const conditionTrend = [
-  { day: "\u6708", score: 72 },
-  { day: "\u706B", score: 78 },
-  { day: "\u6C34", score: 65 },
-  { day: "\u6728", score: 85 },
-  { day: "\u91D1", score: 80 },
-  { day: "\u571F", score: 88 },
-  { day: "\u65E5", score: 82 },
+  { day: "\u6708", score: 0 },
+  { day: "\u706B", score: 0 },
+  { day: "\u6C34", score: 0 },
+  { day: "\u6728", score: 0 },
+  { day: "\u91D1", score: 0 },
+  { day: "\u571F", score: 0 },
+  { day: "\u65E5", score: 0 },
 ]
 
 export function ReportScreen() {
@@ -170,7 +170,7 @@ export function ReportScreen() {
           </div>
           <div className="flex items-center gap-2">
             <Activity className="h-4 w-4 text-orange" />
-            <span className="text-2xl font-bold text-orange">82</span>
+            <span className="text-2xl font-bold text-orange">0</span>
             <span className="text-xs text-muted-foreground">/100</span>
           </div>
         </div>
@@ -221,12 +221,12 @@ export function ReportScreen() {
       <div className="mt-4 grid grid-cols-2 gap-2">
         <div className="rounded-xl border border-border bg-secondary p-3">
           <Flame className="h-4 w-4 text-orange" />
-          <p className="mt-2 text-xl font-bold tabular-nums text-foreground">12</p>
+          <p className="mt-2 text-xl font-bold tabular-nums text-foreground">0</p>
           <p className="text-[10px] text-muted-foreground">{period === "weekly" ? "\u4ECA\u9031" : "\u4ECA\u6708"}{'\u306E\u30BB\u30C3\u30B7\u30E7\u30F3\u6570'}</p>
         </div>
         <div className="rounded-xl border border-border bg-secondary p-3">
           <Activity className="h-4 w-4 text-success" />
-          <p className="mt-2 text-xl font-bold tabular-nums text-foreground">87%</p>
+          <p className="mt-2 text-xl font-bold tabular-nums text-foreground">0%</p>
           <p className="text-[10px] text-muted-foreground">{'\u4F11\u61A9\u5B8C\u4E86\u7387'}</p>
         </div>
       </div>

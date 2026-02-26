@@ -91,18 +91,18 @@ export function DashboardTimer({ onBreakStart, onRequirePro, isProUser }: Dashbo
   }, [totalTime])
 
   const deskOptions: { value: DeskSpace; label: string; icon: React.ReactNode }[] = [
-    { value: "narrow", label: "Narrow", icon: <Minimize2 className="h-3.5 w-3.5" /> },
-    { value: "normal", label: "Normal", icon: <Monitor className="h-3.5 w-3.5" /> },
-    { value: "wide", label: "Wide", icon: <Maximize2 className="h-3.5 w-3.5" /> },
+    { value: "narrow", label: "狭い", icon: <Minimize2 className="h-3.5 w-3.5" /> },
+    { value: "normal", label: "普通", icon: <Monitor className="h-3.5 w-3.5" /> },
+    { value: "wide", label: "広い", icon: <Maximize2 className="h-3.5 w-3.5" /> },
   ]
 
-  const status: "Idle" | "Focus" | "Break" =
-    timeLeft === 0 ? "Break" : isRunning ? "Focus" : "Idle"
+  const status: "待機中" | "集中中" | "休憩" =
+    timeLeft === 0 ? "休憩" : isRunning ? "集中中" : "待機中"
 
   const statusClassName =
-    status === "Focus"
+    status === "集中中"
       ? "bg-orange text-primary-foreground"
-      : status === "Break"
+      : status === "休憩"
         ? "bg-success text-foreground"
         : "bg-secondary text-secondary-foreground"
 
@@ -117,9 +117,9 @@ export function DashboardTimer({ onBreakStart, onRequirePro, isProUser }: Dashbo
         <div className={`flex items-center gap-2 rounded-full px-3 py-1.5 ${statusClassName}`}>
           <div
             className={`h-2 w-2 rounded-full ${
-              status === "Focus"
+              status === "集中中"
                 ? "bg-primary-foreground animate-pulse-glow"
-                : status === "Break"
+                : status === "休憩"
                   ? "bg-foreground"
                   : "bg-muted-foreground"
             }`}
@@ -266,7 +266,7 @@ export function DashboardTimer({ onBreakStart, onRequirePro, isProUser }: Dashbo
                   <path d="M7 5H9V10H11V12H9V14H7V12H5V10H7V5Z" fill="currentColor" />
                 </svg>
               )}
-              {p === "sitting" ? "Sitting" : "Standing"}
+              {p === "sitting" ? "座り" : "立ち"}
             </button>
           ))}
         </div>

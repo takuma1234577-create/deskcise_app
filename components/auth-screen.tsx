@@ -26,7 +26,7 @@ export function AuthScreen() {
         await signUpWithEmail(email, password);
       }
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Authentication failed.";
+      const message = err instanceof Error ? err.message : "認証に失敗しました。";
       setError(message);
     } finally {
       setLoading(false);
@@ -39,7 +39,7 @@ export function AuthScreen() {
     try {
       await signInWithGoogleAccount();
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Google sign-in failed.";
+      const message = err instanceof Error ? err.message : "Googleログインに失敗しました。";
       setError(message);
     } finally {
       setLoading(false);
@@ -50,7 +50,7 @@ export function AuthScreen() {
     return (
       <main className="mx-auto flex min-h-screen max-w-md items-center px-4">
         <div className="w-full rounded-xl border border-border bg-secondary p-4">
-          <h1 className="text-lg font-semibold text-foreground">Firebase Login Setup</h1>
+          <h1 className="text-lg font-semibold text-foreground">Firebaseログイン設定</h1>
           <p className="mt-2 text-sm text-muted-foreground">
             `NEXT_PUBLIC_FIREBASE_*` 環境変数が未設定です。`.env.local` を作成してFirebase設定を追加してください。
           </p>
@@ -62,22 +62,22 @@ export function AuthScreen() {
   return (
     <main className="mx-auto flex min-h-screen max-w-md items-center px-4">
       <div className="w-full rounded-xl border border-border bg-secondary p-4">
-        <h1 className="text-lg font-semibold text-orange">DEKCIZE Login</h1>
+        <h1 className="text-lg font-semibold text-orange">DEKCIZE ログイン</h1>
         <p className="mt-1 text-xs text-muted-foreground">
-          Firebase Authentication
+          Firebase認証
         </p>
 
         <div className="mt-4 space-y-3">
           <input
             type="email"
-            placeholder="Email"
+            placeholder="メールアドレス"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"
           />
           <input
             type="password"
-            placeholder="Password"
+            placeholder="パスワード"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"
@@ -101,7 +101,7 @@ export function AuthScreen() {
           disabled={loading}
           className="mt-2 w-full rounded-lg border border-border px-3 py-2 text-sm text-foreground disabled:opacity-50"
         >
-          Googleで続行
+          Googleでログイン
         </button>
 
         <button

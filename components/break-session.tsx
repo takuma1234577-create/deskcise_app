@@ -248,7 +248,7 @@ export function BreakSession({
 
       <div className="relative mt-8 flex flex-col items-center">
         <span className="text-xs font-medium uppercase tracking-widest text-orange">
-          Life Recovery
+          寿命リカバリー
         </span>
         <div className="relative mt-2">
           <span
@@ -259,7 +259,7 @@ export function BreakSession({
           >
             +{recoveryDisplay}
           </span>
-          <span className="ml-1 text-lg text-orange/70">min</span>
+          <span className="ml-1 text-lg text-orange/70">分</span>
           {particles.map((p) => (
             <span
               key={p.id}
@@ -300,12 +300,12 @@ export function BreakSession({
       <div className="mt-6 w-full rounded-xl border border-border bg-secondary p-4">
         <div>
           <p className="text-sm font-semibold text-foreground">
-            {effectiveMenuId === "leg-extension" ? "Sitting Only" : currentMenu.label}
+            {effectiveMenuId === "leg-extension" ? "座り専用メニュー" : currentMenu.label}
           </p>
           <p className="mt-0.5 text-xs text-muted-foreground">
             {effectiveMenuType === "standing"
-              ? "Pro menu active: full +22 min buyback"
-              : "Free menu active: +9 min buyback"}
+              ? "プロメニュー有効: +22分のフル買い戻し"
+              : "無料メニュー有効: +9分の買い戻し"}
           </p>
         </div>
       </div>

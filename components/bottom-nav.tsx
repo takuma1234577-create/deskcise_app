@@ -23,7 +23,7 @@ export function BottomNav({ current, onChange }: BottomNavProps) {
     },
     {
       id: "paywall",
-      label: "Pro",
+      label: "プロ",
       icon: <Crown className="h-5 w-5" />,
     },
     {

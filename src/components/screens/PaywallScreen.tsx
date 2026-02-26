@@ -21,21 +21,21 @@ export function PaywallScreen({
           className="rounded-lg bg-[#F47B2A] px-3 py-2 text-sm font-medium"
           onClick={onBuyMonthly}
         >
-          Monthly $4.99
+          月額 $4.99
         </button>
         <button
           type="button"
           className="rounded-lg border border-white/30 px-3 py-2 text-sm font-medium"
           onClick={onBuyYearly}
         >
-          Yearly $39.99
+          年額 $39.99
         </button>
         <button
           type="button"
           className="rounded-lg border border-white/30 px-3 py-2 text-sm font-medium"
           onClick={onBuyLifetime}
         >
-          Lifetime $79.99
+          買い切り $79.99
         </button>
       </div>
     </section>

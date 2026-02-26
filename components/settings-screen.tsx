@@ -50,7 +50,7 @@ export function SettingsScreen() {
           <p>
             プラン:{" "}
             <span className="font-medium text-foreground">
-              {isProUnlocked ? "Pro (有効)" : `Free / Trial残り${trialDaysRemaining}日`}
+              {isProUnlocked ? "プロ（有効）" : `無料 / トライアル残り${trialDaysRemaining}日`}
             </span>
           </p>
         </div>

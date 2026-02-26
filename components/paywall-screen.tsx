@@ -93,7 +93,7 @@ export function PaywallScreen({ onClose, onUpgrade }: PaywallScreenProps) {
           <div className="flex flex-col items-center border-l border-border bg-orange-muted p-3">
             <div className="flex items-center gap-1">
               <Zap className="h-3 w-3 text-orange" />
-              <span className="text-xs font-bold text-orange">Pro</span>
+              <span className="text-xs font-bold text-orange">プロ</span>
             </div>
           </div>
         </div>
