@@ -2,15 +2,69 @@
 
 import { useState } from "react"
 import { ChevronDown } from "lucide-react"
+import { useAuth } from "@/src/context/AuthContext"
+import { useSubscription } from "@/src/context/SubscriptionContext"
 
 export function SettingsScreen() {
   const [showTerms, setShowTerms] = useState(false)
+  const { user, signOutFromApp } = useAuth()
+  const { isProUnlocked, trialDaysRemaining } = useSubscription()
+
+  const providerLabel =
+    user?.providerData?.map((provider) => provider.providerId).join(", ") ?? "unknown"
 
   return (
     <div className="flex flex-col px-4 pb-24">
       <div className="py-4">
         <h1 className="text-lg font-semibold text-foreground">設定</h1>
         <p className="text-xs text-muted-foreground">アプリ設定と法的情報</p>
+      </div>
+
+      <div className="mb-3 rounded-xl border border-border bg-secondary p-4">
+        <p className="text-xs font-semibold uppercase tracking-wider text-orange">
+          アカウント
+        </p>
+        <div className="mt-2 space-y-1.5 text-xs text-muted-foreground">
+          <p>
+            ログイン状態:{" "}
+            <span className="font-medium text-foreground">
+              {user ? "ログイン中" : "未ログイン"}
+            </span>
+          </p>
+          {user && (
+            <>
+              <p>
+                メール:{" "}
+                <span className="font-medium text-foreground">{user.email ?? "未設定"}</span>
+              </p>
+              <p>
+                UID:{" "}
+                <span className="font-medium text-foreground break-all">{user.uid}</span>
+              </p>
+              <p>
+                プロバイダ:{" "}
+                <span className="font-medium text-foreground">{providerLabel}</span>
+              </p>
+            </>
+          )}
+          <p>
+            プラン:{" "}
+            <span className="font-medium text-foreground">
+              {isProUnlocked ? "Pro (有効)" : `Free / Trial残り${trialDaysRemaining}日`}
+            </span>
+          </p>
+        </div>
+        {user && (
+          <button
+            type="button"
+            onClick={() => {
+              void signOutFromApp()
+            }}
+            className="mt-3 rounded-lg border border-border px-3 py-2 text-xs text-foreground"
+          >
+            ログアウト
+          </button>
+        )}
       </div>
 
       <div className="rounded-xl border border-border bg-secondary">

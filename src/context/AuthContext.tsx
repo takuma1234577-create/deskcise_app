@@ -47,11 +47,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
+    const timeoutId = window.setTimeout(() => {
+      // Fallback to avoid being stuck forever in loading state.
+      setLoading(false);
+    }, 4000);
+
     const unsubscribe = onAuthStateChanged(firebaseAuth, (nextUser) => {
       setUser(nextUser);
       setLoading(false);
+      window.clearTimeout(timeoutId);
     });
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      window.clearTimeout(timeoutId);
+    };
   }, []);
 
   const value = useMemo<AuthContextValue>(

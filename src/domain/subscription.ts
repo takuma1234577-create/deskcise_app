@@ -5,6 +5,7 @@ const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 export interface SubscriptionState {
   firstLaunchAt: string;
+  trialStartDate: string | null;
   isProUser: boolean;
 }
 
@@ -19,15 +20,24 @@ export type FeatureKey = "standingMenu" | "detailedReport";
 export function createInitialSubscriptionState(now: Date = new Date()): SubscriptionState {
   return {
     firstLaunchAt: now.toISOString(),
+    trialStartDate: null,
     isProUser: false,
   };
 }
 
 export function getTrialStatus(
-  firstLaunchAtISO: string,
+  trialStartDateISO: string | null,
   now: Date = new Date()
 ): TrialStatus {
-  const firstLaunchAt = new Date(firstLaunchAtISO);
+  if (!trialStartDateISO) {
+    return {
+      isTrialActive: false,
+      daysRemaining: 0,
+      trialEndsAt: "",
+    };
+  }
+
+  const firstLaunchAt = new Date(trialStartDateISO);
   const trialEndsAtDate = new Date(
     firstLaunchAt.getTime() + TRIAL_DAYS * MS_PER_DAY
   );
@@ -49,7 +59,7 @@ export function resolveProAccess(
     return true;
   }
 
-  const trial = getTrialStatus(state.firstLaunchAt, now);
+  const trial = getTrialStatus(state.trialStartDate, now);
   return trial.isTrialActive;
 }
 
@@ -76,4 +86,11 @@ export function resolveMenuAvailability(
     return canAccessFeature("standingMenu", state, now);
   }
   return true;
+}
+
+export function startTrial(state: SubscriptionState, now: Date = new Date()): SubscriptionState {
+  return {
+    ...state,
+    trialStartDate: now.toISOString(),
+  };
 }

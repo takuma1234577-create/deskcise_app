@@ -10,6 +10,7 @@ import {
   createInitialSubscriptionState,
   getTrialStatus,
   resolveProAccess,
+  startTrial,
   type SubscriptionState,
 } from "../domain/subscription";
 import {
@@ -21,10 +22,11 @@ export type BillingPlan = "monthly" | "yearly" | "lifetime";
 
 export interface SubscriptionContextValue {
   subscription: SubscriptionState;
-  trialStartDate: string;
+  trialStartDate: string | null;
   isProUnlocked: boolean;
   trialDaysRemaining: number;
   trialEndsAt: string;
+  startTrialOffer: () => void;
   purchasePlan: (plan: BillingPlan) => void;
   restorePurchase: () => void;
 }
@@ -37,8 +39,8 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
   );
 
   const trialStatus = useMemo(
-    () => getTrialStatus(subscription.firstLaunchAt),
-    [subscription.firstLaunchAt]
+    () => getTrialStatus(subscription.trialStartDate),
+    [subscription.trialStartDate]
   );
 
   const isProUnlocked = useMemo(
@@ -54,8 +56,11 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
     const schedule = () => {
       try {
         const cumulativeRecoveryMinutes = getCumulativeRecoveryMinutesFromStorage();
+        if (!subscription.trialStartDate) {
+          return;
+        }
         scheduleTrialMilestoneNotifications({
-          trialStartDate: subscription.firstLaunchAt,
+          trialStartDate: subscription.trialStartDate,
           cumulativeRecoveryMinutes,
         });
       } catch {
@@ -70,15 +75,18 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
       window.removeEventListener("storage", schedule);
       window.removeEventListener("focus", schedule);
     };
-  }, [subscription.firstLaunchAt]);
+  }, [subscription.trialStartDate]);
 
   const value = useMemo<SubscriptionContextValue>(
     () => ({
       subscription,
-      trialStartDate: subscription.firstLaunchAt,
+      trialStartDate: subscription.trialStartDate,
       isProUnlocked,
       trialDaysRemaining: trialStatus.daysRemaining,
       trialEndsAt: trialStatus.trialEndsAt,
+      startTrialOffer: () => {
+        setSubscription((prev) => startTrial(prev));
+      },
       purchasePlan: (_plan: BillingPlan) => {
         setSubscription((prev) => ({ ...prev, isProUser: true }));
       },

@@ -1,12 +1,13 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { DashboardTimer } from "@/components/dashboard-timer"
 import { BreakSession } from "@/components/break-session"
 import { ReportScreen } from "@/components/report-screen"
 import { PaywallScreen } from "@/components/paywall-screen"
 import { SettingsScreen } from "@/components/settings-screen"
 import { AuthScreen } from "@/components/auth-screen"
+import { TrialOfferScreen } from "@/components/trial-offer-screen"
 import { BottomNav, type Screen } from "@/components/bottom-nav"
 import { AuthProvider, useAuth } from "@/src/context/AuthContext"
 import { SubscriptionProvider, useSubscription } from "@/src/context/SubscriptionContext"
@@ -29,7 +30,9 @@ function HomeContent() {
   const [breakPayload, setBreakPayload] = useState<BreakPayload | null>(null)
   const [exerciseLogs, setExerciseLogs] = useState<ExerciseLogRecord[]>([])
   const [completionMessage, setCompletionMessage] = useState<string | null>(null)
-  const { subscription, purchasePlan } = useSubscription()
+  const [showTrialOffer, setShowTrialOffer] = useState(false)
+  const [trialOfferHandled, setTrialOfferHandled] = useState(false)
+  const { subscription, purchasePlan, isProUnlocked, trialStartDate, startTrialOffer } = useSubscription()
   const { user, loading } = useAuth()
 
   const handleBreakStart = useCallback((payload: BreakPayload) => {
@@ -78,6 +81,26 @@ function HomeContent() {
     setIsBreakActive(false)
   }, [])
 
+  const handleStartTrial = useCallback(() => {
+    startTrialOffer()
+    setShowTrialOffer(false)
+    setTrialOfferHandled(true)
+  }, [startTrialOffer])
+
+  const handleSkipTrialOffer = useCallback(() => {
+    setShowTrialOffer(false)
+    setTrialOfferHandled(true)
+  }, [])
+
+  useEffect(() => {
+    if (!user || trialOfferHandled) {
+      return
+    }
+    if (!isProUnlocked && !trialStartDate && !subscription.isProUser) {
+      setShowTrialOffer(true)
+    }
+  }, [user, trialOfferHandled, isProUnlocked, trialStartDate, subscription.isProUser])
+
   if (loading) {
     return (
       <main className="mx-auto flex min-h-screen max-w-md items-center justify-center bg-background">
@@ -90,6 +113,15 @@ function HomeContent() {
     return <AuthScreen />
   }
 
+  if (showTrialOffer) {
+    return (
+      <TrialOfferScreen
+        onStartTrial={handleStartTrial}
+        onSkip={handleSkipTrialOffer}
+      />
+    )
+  }
+
   if (isBreakActive && breakPayload) {
     return (
       <BreakSession
@@ -97,7 +129,7 @@ function HomeContent() {
         onSkip={handleBreakSkip}
         lifeLossPrediction={breakPayload.lifeLossPrediction}
         currentMenu={breakPayload.currentMenu}
-        isProUser={subscription.isProUser}
+        isProUser={isProUnlocked}
       />
     )
   }
@@ -113,7 +145,7 @@ function HomeContent() {
         {screen === "dashboard" && (
           <DashboardTimer
             onBreakStart={handleBreakStart}
-            isProUser={subscription.isProUser}
+            isProUser={isProUnlocked}
             onRequirePro={() => setScreen("paywall")}
           />
         )}

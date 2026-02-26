@@ -30,6 +30,7 @@ export interface UserStateSnapshot {
   userId: string;
   subscription: {
     firstLaunchAt: string;
+    trialStartDate: string | null;
     isProUser: boolean;
   };
   createdAt: string;
