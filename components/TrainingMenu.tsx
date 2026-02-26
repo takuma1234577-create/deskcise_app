@@ -13,6 +13,7 @@ import {
   PersonStanding,
   RotateCcw,
   StretchHorizontal,
+  Sparkles,
   Table2,
   Timer,
 } from "lucide-react"
@@ -371,7 +372,7 @@ export function TrainingMenu() {
   }, [tab])
 
   return (
-    <section className="mt-6 w-full rounded-xl border border-[#1E3A66] bg-[#10284A] p-4">
+    <section className="mt-6 w-full rounded-2xl border border-[#2E5FA2] bg-gradient-to-b from-[#1B3F76] to-[#173A6A] p-4 shadow-[0_10px_24px_rgba(15,23,42,0.35)]">
       <h3 className="text-sm font-semibold text-white">トレーニングメニュー</h3>
       <p className="mt-1 text-xs text-white/70">今の姿勢と環境に合わせて選択</p>
 
@@ -398,7 +399,7 @@ export function TrainingMenu() {
           return (
             <article
               key={item.id}
-              className="rounded-lg border border-[#2D568F] bg-[#173A6A] p-3"
+              className="rounded-2xl border border-[#3E6FB1] bg-gradient-to-b from-[#203F73] to-[#1A3A6A] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-2">
@@ -416,7 +417,7 @@ export function TrainingMenu() {
               <button
                 type="button"
                 onClick={() => setSelectedId((prev) => (prev === item.id ? null : item.id))}
-                className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-[#F97316] hover:text-[#FB923C]"
+                className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-[#F97316] hover:text-[#FB923C]"
               >
                 {selectedId === item.id ? (
                   <>
@@ -432,13 +433,14 @@ export function TrainingMenu() {
               </button>
 
               {selectedId === item.id && (
-                <div className="mt-2 rounded-md border border-[#335D93] bg-[#0F2747] p-2">
-                  <div className="flex items-center justify-center rounded-md bg-[#10213A] py-2">
+                <div className="relative mt-3 rounded-3xl border border-[#4D79B9] bg-gradient-to-b from-[#1A3F78] to-[#142F59] p-3">
+                  <div className="flex items-center justify-center rounded-2xl border border-[#203F6A] bg-gradient-to-r from-[#111F39] via-[#10264A] to-[#111F39] py-3">
                     <TrainingAnimation menuId={item.id} />
                   </div>
-                  <p className="mt-2 text-center text-[10px] text-white/60">
+                  <p className="mt-3 text-center text-[10px] text-white/60">
                     クリックで確認できるデモアニメーションです
                   </p>
+                  <Sparkles className="absolute bottom-2 right-2 h-3.5 w-3.5 text-white/60" />
                 </div>
               )}
             </article>
