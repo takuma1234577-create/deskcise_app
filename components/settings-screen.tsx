@@ -4,6 +4,7 @@ import { useState } from "react"
 import { ChevronDown } from "lucide-react"
 import { useAuth } from "@/src/context/AuthContext"
 import { useSubscription } from "@/src/context/SubscriptionContext"
+import { NotificationSettings } from "@/components/NotificationSettings"
 
 export function SettingsScreen() {
   const [showTerms, setShowTerms] = useState(false)
@@ -19,6 +20,8 @@ export function SettingsScreen() {
         <h1 className="text-lg font-semibold text-foreground">設定</h1>
         <p className="text-xs text-muted-foreground">アプリ設定と法的情報</p>
       </div>
+
+      <NotificationSettings />
 
       <div className="mb-3 rounded-xl border border-border bg-secondary p-4">
         <p className="text-xs font-semibold uppercase tracking-wider text-orange">
