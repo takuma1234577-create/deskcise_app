@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
+import { motion } from "framer-motion"
 import {
   ArrowUpDown,
   ChevronDown,
@@ -29,217 +30,156 @@ interface TrainingItem {
   icon: LucideIcon
 }
 
-function TrainingAnimation({ menuId }: { menuId: string }) {
-  const [frame, setFrame] = useState(0)
+type AnimationMode = "seated" | "standing" | "desk"
 
-  useEffect(() => {
-    const interval = window.setInterval(() => setFrame((prev) => (prev + 1) % 2), 650)
-    return () => window.clearInterval(interval)
-  }, [])
-
-  const isAlt = frame === 1
-
-  const svgClass = "h-28 w-28 text-[#F97316]"
-  const stroke = "currentColor"
-  const strokeWidth = 3
-
-  switch (menuId) {
-    case "seated-leg-extension":
-      return (
-        <svg viewBox="0 0 100 120" className={svgClass}>
-          <circle cx="52" cy="22" r="7" fill="currentColor" />
-          <rect x="20" y="54" width="28" height="4" fill="currentColor" opacity="0.45" />
-          <line x1="52" y1="29" x2="42" y2="49" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="42" y1="49" x2="34" y2="56" stroke={stroke} strokeWidth={strokeWidth} />
-          <line
-            x1="42"
-            y1="49"
-            x2={isAlt ? "70" : "60"}
-            y2={isAlt ? "60" : "68"}
-            stroke={stroke}
-            strokeWidth={strokeWidth}
-          />
-          <line x1="34" y1="56" x2="34" y2="80" stroke={stroke} strokeWidth={strokeWidth} />
-        </svg>
-      )
-    case "seated-scapula-open":
-      return (
-        <svg viewBox="0 0 100 120" className={svgClass}>
-          <circle cx="50" cy="20" r="8" fill="currentColor" />
-          <line x1="50" y1="28" x2="50" y2="64" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="42" x2={isAlt ? "24" : "34"} y2="36" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="42" x2={isAlt ? "76" : "66"} y2="36" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="64" x2="36" y2="88" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="64" x2="64" y2="88" stroke={stroke} strokeWidth={strokeWidth} />
-        </svg>
-      )
-    case "neck-stretch":
-      return (
-        <svg viewBox="0 0 100 120" className={svgClass}>
-          <circle cx={isAlt ? "46" : "54"} cy="22" r="8" fill="currentColor" />
-          <line x1="50" y1="30" x2="50" y2="66" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="42" x2="32" y2="54" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="42" x2="68" y2="54" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="66" x2="38" y2="90" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="66" x2="62" y2="90" stroke={stroke} strokeWidth={strokeWidth} />
-        </svg>
-      )
-    case "seated-twist":
-      return (
-        <svg viewBox="0 0 100 120" className={svgClass}>
-          <circle cx="50" cy="22" r="7" fill="currentColor" />
-          <rect x="20" y="56" width="30" height="4" fill="currentColor" opacity="0.45" />
-          <line x1="50" y1="30" x2={isAlt ? "58" : "42"} y2="52" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1={isAlt ? "58" : "42"} y1="52" x2={isAlt ? "72" : "28"} y2="52" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1={isAlt ? "58" : "42"} y1="52" x2="50" y2="74" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="74" x2="38" y2="92" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="74" x2="62" y2="92" stroke={stroke} strokeWidth={strokeWidth} />
-        </svg>
-      )
-    case "ankle-circles":
-      return (
-        <svg viewBox="0 0 100 120" className={svgClass}>
-          <circle cx="52" cy="22" r="7" fill="currentColor" />
-          <rect x="20" y="56" width="28" height="4" fill="currentColor" opacity="0.45" />
-          <line x1="52" y1="30" x2="42" y2="50" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="42" y1="50" x2="34" y2="56" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="42" y1="50" x2="66" y2="66" stroke={stroke} strokeWidth={strokeWidth} />
-          <circle
-            cx={isAlt ? "74" : "68"}
-            cy={isAlt ? "66" : "72"}
-            r="5"
-            stroke={stroke}
-            strokeWidth="2"
-            fill="none"
-            opacity="0.9"
-          />
-        </svg>
-      )
-    case "standing-calf-raise":
-      return (
-        <svg viewBox="0 0 100 120" className={svgClass}>
-          <circle cx="50" cy={isAlt ? "16" : "20"} r="9" fill="currentColor" />
-          <line x1="50" y1={isAlt ? "25" : "29"} x2="50" y2={isAlt ? "64" : "68"} stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="42" x2="34" y2="52" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="42" x2="66" y2="52" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1={isAlt ? "64" : "68"} x2="40" y2={isAlt ? "88" : "94"} stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1={isAlt ? "64" : "68"} x2="60" y2={isAlt ? "88" : "94"} stroke={stroke} strokeWidth={strokeWidth} />
-        </svg>
-      )
-    case "knee-up":
-      return (
-        <svg viewBox="0 0 100 120" className={svgClass}>
-          <circle cx="50" cy="18" r="8" fill="currentColor" />
-          <line x1="50" y1="26" x2="50" y2="62" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="40" x2="34" y2="50" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="40" x2="66" y2="50" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="62" x2={isAlt ? "38" : "44"} y2="90" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="62" x2={isAlt ? "70" : "58"} y2={isAlt ? "74" : "92"} stroke={stroke} strokeWidth={strokeWidth} />
-        </svg>
-      )
-    case "arm-circle":
-      return (
-        <svg viewBox="0 0 100 120" className={svgClass}>
-          <circle cx="50" cy="20" r="8" fill="currentColor" />
-          <line x1="50" y1="28" x2="50" y2="66" stroke={stroke} strokeWidth={strokeWidth} />
-          <path
-            d={isAlt ? "M33 45 C 22 36, 24 26, 34 20" : "M33 45 C 22 56, 24 66, 34 72"}
-            stroke={stroke}
-            strokeWidth="3"
-            fill="none"
-          />
-          <path
-            d={isAlt ? "M67 45 C 78 56, 76 66, 66 72" : "M67 45 C 78 36, 76 26, 66 20"}
-            stroke={stroke}
-            strokeWidth="3"
-            fill="none"
-          />
-          <line x1="50" y1="66" x2="38" y2="90" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="66" x2="62" y2="90" stroke={stroke} strokeWidth={strokeWidth} />
-        </svg>
-      )
-    case "side-stretch":
-      return (
-        <svg viewBox="0 0 100 120" className={svgClass}>
-          <circle cx="50" cy="20" r="8" fill="currentColor" />
-          <line x1="50" y1="28" x2={isAlt ? "44" : "56"} y2="66" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="42" x2={isAlt ? "26" : "74"} y2="30" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="42" x2={isAlt ? "70" : "30"} y2="56" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1={isAlt ? "44" : "56"} y1="66" x2="38" y2="90" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1={isAlt ? "44" : "56"} y1="66" x2="62" y2="90" stroke={stroke} strokeWidth={strokeWidth} />
-        </svg>
-      )
-    case "standing-squat":
-      return (
-        <svg viewBox="0 0 100 120" className={svgClass}>
-          <circle cx="50" cy={isAlt ? "24" : "20"} r="8" fill="currentColor" />
-          <line x1="50" y1={isAlt ? "32" : "28"} x2="50" y2={isAlt ? "66" : "56"} stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="42" x2="32" y2="54" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="42" x2="68" y2="54" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1={isAlt ? "66" : "56"} x2="34" y2={isAlt ? "88" : "92"} stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1={isAlt ? "66" : "56"} x2="66" y2={isAlt ? "88" : "92"} stroke={stroke} strokeWidth={strokeWidth} />
-        </svg>
-      )
-    case "desk-pushup":
-      return (
-        <svg viewBox="0 0 100 120" className={svgClass}>
-          <line x1="18" y1="78" x2="84" y2="78" stroke={stroke} strokeWidth="2" opacity="0.45" />
-          <circle cx="62" cy={isAlt ? "24" : "28"} r="7" fill="currentColor" />
-          <line x1="62" y1="32" x2={isAlt ? "48" : "52"} y2="58" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1={isAlt ? "48" : "52"} y1="58" x2={isAlt ? "28" : "36"} y2="58" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1={isAlt ? "28" : "36"} y1="58" x2={isAlt ? "28" : "36"} y2="78" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1={isAlt ? "34" : "42"} y1="58" x2={isAlt ? "34" : "42"} y2="78" stroke={stroke} strokeWidth={strokeWidth} />
-        </svg>
-      )
-    case "desk-triceps-dips":
-      return (
-        <svg viewBox="0 0 100 120" className={svgClass}>
-          <rect x="18" y="48" width="38" height="4" fill="currentColor" opacity="0.45" />
-          <circle cx={isAlt ? "58" : "54"} cy={isAlt ? "34" : "28"} r="7" fill="currentColor" />
-          <line x1={isAlt ? "58" : "54"} y1={isAlt ? "42" : "36"} x2="50" y2={isAlt ? "62" : "54"} stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1={isAlt ? "62" : "54"} x2="34" y2="50" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1={isAlt ? "62" : "54"} x2="62" y2={isAlt ? "84" : "76"} stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="62" y1={isAlt ? "84" : "76"} x2="72" y2="94" stroke={stroke} strokeWidth={strokeWidth} />
-        </svg>
-      )
-    case "under-desk-lunge":
-      return (
-        <svg viewBox="0 0 100 120" className={svgClass}>
-          <rect x="16" y="34" width="68" height="4" fill="currentColor" opacity="0.4" />
-          <circle cx="50" cy="22" r="7" fill="currentColor" />
-          <line x1="50" y1="30" x2="50" y2="60" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="44" x2="34" y2="54" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="44" x2="66" y2="54" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="60" x2={isAlt ? "30" : "40"} y2={isAlt ? "84" : "92"} stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="50" y1="60" x2={isAlt ? "76" : "68"} y2={isAlt ? "92" : "84"} stroke={stroke} strokeWidth={strokeWidth} />
-        </svg>
-      )
-    case "desk-chest-stretch":
-      return (
-        <svg viewBox="0 0 100 120" className={svgClass}>
-          <rect x="18" y="56" width="36" height="4" fill="currentColor" opacity="0.45" />
-          <circle cx="64" cy="22" r="7" fill="currentColor" />
-          <line x1="64" y1="30" x2={isAlt ? "54" : "58"} y2="58" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1={isAlt ? "54" : "58"} y1="58" x2="46" y2="58" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1={isAlt ? "54" : "58"} y1="58" x2={isAlt ? "66" : "62"} y2="84" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1={isAlt ? "66" : "62"} y1="84" x2="74" y2="96" stroke={stroke} strokeWidth={strokeWidth} />
-        </svg>
-      )
-    case "desk-walk":
-      return (
-        <svg viewBox="0 0 100 120" className={svgClass}>
-          <circle cx={isAlt ? "56" : "44"} cy="20" r="8" fill="currentColor" />
-          <line x1={isAlt ? "56" : "44"} y1="28" x2={isAlt ? "56" : "44"} y2="62" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1={isAlt ? "56" : "44"} y1="40" x2={isAlt ? "42" : "58"} y2="50" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1={isAlt ? "56" : "44"} y1="40" x2={isAlt ? "70" : "30"} y2="50" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1={isAlt ? "56" : "44"} y1="62" x2={isAlt ? "42" : "58"} y2="92" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1={isAlt ? "56" : "44"} y1="62" x2={isAlt ? "70" : "30"} y2="80" stroke={stroke} strokeWidth={strokeWidth} />
-          <line x1="18" y1="96" x2="82" y2="96" stroke={stroke} strokeWidth="2" opacity="0.35" />
-        </svg>
-      )
-    default:
-      return null
+function resolveAnimationMode(menuId: string): AnimationMode {
+  if (
+    menuId === "seated-leg-extension" ||
+    menuId === "seated-scapula-open" ||
+    menuId === "neck-stretch" ||
+    menuId === "seated-twist" ||
+    menuId === "ankle-circles"
+  ) {
+    return "seated"
   }
+  if (
+    menuId === "standing-calf-raise" ||
+    menuId === "knee-up" ||
+    menuId === "arm-circle" ||
+    menuId === "side-stretch" ||
+    menuId === "standing-squat"
+  ) {
+    return "standing"
+  }
+  return "desk"
+}
+
+function TrainingAnimation({ menuId }: { menuId: string }) {
+  const mode = resolveAnimationMode(menuId)
+
+  return (
+    <div className="relative h-32 w-32">
+      <motion.svg
+        viewBox="0 0 120 120"
+        className="h-full w-full"
+        initial={{ opacity: 0.85, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3 }}
+      >
+        <defs>
+          <radialGradient id={`glow-${menuId}`} cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stopColor="#F97316" stopOpacity="0.45" />
+            <stop offset="100%" stopColor="#F97316" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+
+        <ellipse cx="60" cy="104" rx="38" ry="10" fill="#0F172A" opacity="0.65" />
+        <circle cx="60" cy="72" r="36" fill={`url(#glow-${menuId})`} />
+
+        {mode !== "standing" && (
+          <>
+            <rect x="26" y="63" width="34" height="7" rx="3.5" fill="#F97316" opacity="0.7" />
+            <rect x="50" y="56" width="8" height="37" rx="4" fill="#F97316" opacity="0.35" />
+            <rect x="43" y="93" width="24" height="5" rx="2.5" fill="#F97316" opacity="0.35" />
+          </>
+        )}
+
+        {mode === "desk" && (
+          <>
+            <rect x="18" y="44" width="36" height="6" rx="3" fill="#F97316" opacity="0.45" />
+            <rect x="26" y="50" width="5" height="16" rx="2.5" fill="#F97316" opacity="0.35" />
+          </>
+        )}
+
+        <circle cx={mode === "desk" ? 72 : 70} cy={mode === "standing" ? 25 : 27} r="8.5" fill="#F97316" />
+        <rect
+          x={mode === "desk" ? 60 : 58}
+          y={mode === "standing" ? 34 : 36}
+          width="14"
+          height="30"
+          rx="7"
+          fill="#F97316"
+        />
+
+        {mode === "seated" && (
+          <>
+            <rect x="48" y="58" width="24" height="8" rx="4" fill="#F97316" />
+            <motion.rect
+              x="67"
+              y="63"
+              width="30"
+              height="7"
+              rx="3.5"
+              fill="#F97316"
+              animate={{ rotate: [-22, 6, -22], x: [0, -2, 0], y: [0, -2, 0] }}
+              transition={{ duration: 1.3, repeat: Infinity, ease: "easeInOut" }}
+              style={{ transformOrigin: "67px 66px" }}
+            />
+            <rect x="46" y="65" width="8" height="27" rx="4" fill="#F97316" />
+          </>
+        )}
+
+        {mode === "standing" && (
+          <>
+            <motion.rect
+              x="52"
+              y="62"
+              width="8"
+              height="30"
+              rx="4"
+              fill="#F97316"
+              animate={{ y: [62, 58, 62] }}
+              transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.rect
+              x="67"
+              y="62"
+              width="8"
+              height="30"
+              rx="4"
+              fill="#F97316"
+              animate={{ y: [58, 62, 58] }}
+              transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </>
+        )}
+
+        {mode === "desk" && (
+          <>
+            <motion.rect
+              x="47"
+              y="60"
+              width="24"
+              height="8"
+              rx="4"
+              fill="#F97316"
+              animate={{ rotate: [-18, 8, -18], x: [0, -1, 0], y: [0, -2, 0] }}
+              transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+              style={{ transformOrigin: "47px 64px" }}
+            />
+            <rect x="43" y="66" width="8" height="26" rx="4" fill="#F97316" />
+            <rect x="64" y="66" width="8" height="26" rx="4" fill="#F97316" />
+          </>
+        )}
+      </motion.svg>
+
+      <motion.div
+        className="absolute left-5 top-5 text-[#FB923C]"
+        animate={{ rotate: [-12, 12, -12], opacity: [0.7, 1, 0.7] }}
+        transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+          <path
+            d="M7 23C12 14 19 12 27 10"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeLinecap="round"
+          />
+          <path d="M22 7L28 10L24 16" fill="currentColor" />
+        </svg>
+      </motion.div>
+    </div>
+  )
 }
 
 const TRAINING_DATA: Record<TrainingCategory, TrainingItem[]> = {
