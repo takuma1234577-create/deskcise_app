@@ -7,6 +7,7 @@ import { predictLifeLossFromSitting } from "@/src/features/life-buyback/engine/l
 import type { LifeBuybackMenuType } from "@/src/features/life-buyback"
 import { TrainingMenu } from "@/components/TrainingMenu"
 import { BrandLogo } from "@/components/BrandLogo"
+import { StepUpOnChairContent } from "@/components/StepUpOnChairContent"
 
 type DeskSpace = "narrow" | "normal" | "wide"
 type Posture = "sitting" | "standing"
@@ -303,6 +304,7 @@ export function DashboardTimer({ onBreakStart, onRequirePro, isProUser }: Dashbo
       </div>
 
       <TrainingMenu />
+      <StepUpOnChairContent />
     </div>
   )
 }
