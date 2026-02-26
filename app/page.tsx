@@ -32,18 +32,6 @@ function HomeContent() {
   const { subscription, purchasePlan } = useSubscription()
   const { user, loading } = useAuth()
 
-  if (loading) {
-    return (
-      <main className="mx-auto flex min-h-screen max-w-md items-center justify-center bg-background">
-        <p className="text-sm text-muted-foreground">ログイン状態を確認中...</p>
-      </main>
-    )
-  }
-
-  if (!user) {
-    return <AuthScreen />
-  }
-
   const handleBreakStart = useCallback((payload: BreakPayload) => {
     setBreakPayload(payload)
     setIsBreakActive(true)
@@ -89,6 +77,18 @@ function HomeContent() {
     setBreakPayload(null)
     setIsBreakActive(false)
   }, [])
+
+  if (loading) {
+    return (
+      <main className="mx-auto flex min-h-screen max-w-md items-center justify-center bg-background">
+        <p className="text-sm text-muted-foreground">ログイン状態を確認中...</p>
+      </main>
+    )
+  }
+
+  if (!user) {
+    return <AuthScreen />
+  }
 
   if (isBreakActive && breakPayload) {
     return (

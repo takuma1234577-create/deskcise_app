@@ -7,12 +7,12 @@ export interface ExerciseScreenProps {
 
 export function ExerciseScreen({ menu, liveRecoveryText }: ExerciseScreenProps) {
   return (
-    <section className="rounded-2xl border border-[#1A1A2E]/15 bg-white p-6">
-      <h2 className="text-xl font-semibold text-[#1A1A2E]">Exercise</h2>
-      <p className="mt-2 text-sm text-[#1A1A2E]/70">{liveRecoveryText}</p>
+    <section className="rounded-2xl border border-[#173A6A]/15 bg-white p-6">
+      <h2 className="text-xl font-semibold text-[#173A6A]">Exercise</h2>
+      <p className="mt-2 text-sm text-[#173A6A]/70">{liveRecoveryText}</p>
       <ul className="mt-4 space-y-2">
         {menu.exercises.map((exercise) => (
-          <li key={exercise.id} className="text-sm text-[#1A1A2E]">
+          <li key={exercise.id} className="text-sm text-[#173A6A]">
             {exercise.label}
           </li>
         ))}

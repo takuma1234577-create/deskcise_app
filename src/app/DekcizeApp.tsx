@@ -26,7 +26,7 @@ function DekcizeAppBody() {
           onBuyLifetime={() => purchasePlan("lifetime")}
         />
       )}
-      <p className="text-xs text-[#1A1A2E]/60">
+      <p className="text-xs text-[#173A6A]/60">
         {isProUnlocked ? "Pro Enabled" : `Trial: ${trialDaysRemaining} days left`}
       </p>
     </main>

@@ -177,7 +177,7 @@ export function ReportScreen() {
         <div className="mt-4 h-32">
           <ChartContainer
             config={{
-              score: { label: "\u30B9\u30B3\u30A2", color: "#FF5F1F" },
+              score: { label: "\u30B9\u30B3\u30A2", color: "#F47B2A" },
             }}
             className="h-full w-full"
           >
@@ -185,8 +185,8 @@ export function ReportScreen() {
               <AreaChart data={conditionTrend}>
                 <defs>
                   <linearGradient id="scoreGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#FF5F1F" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#FF5F1F" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#F47B2A" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#F47B2A" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#333358" vertical={false} />
@@ -207,7 +207,7 @@ export function ReportScreen() {
                 <Area
                   type="monotone"
                   dataKey="score"
-                  stroke="#FF5F1F"
+                  stroke="#F47B2A"
                   strokeWidth={2}
                   fill="url(#scoreGradient)"
                 />

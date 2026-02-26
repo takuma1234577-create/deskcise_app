@@ -62,7 +62,7 @@ export function AuthScreen() {
   return (
     <main className="mx-auto flex min-h-screen max-w-md items-center px-4">
       <div className="w-full rounded-xl border border-border bg-secondary p-4">
-        <h1 className="text-lg font-semibold text-foreground">Dekcize Login</h1>
+        <h1 className="text-lg font-semibold text-orange">DEKCIZE Login</h1>
         <p className="mt-1 text-xs text-muted-foreground">
           Firebase Authentication
         </p>

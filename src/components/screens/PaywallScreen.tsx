@@ -10,15 +10,15 @@ export function PaywallScreen({
   onBuyLifetime,
 }: PaywallScreenProps) {
   return (
-    <section className="rounded-2xl border border-[#FF5F1F]/25 bg-[#1A1A2E] p-6 text-white">
-      <h2 className="text-xl font-semibold">Dekcize Pro</h2>
+    <section className="rounded-2xl border border-[#F47B2A]/25 bg-[#173A6A] p-6 text-white">
+      <h2 className="text-xl font-semibold">DEKCIZE Pro</h2>
       <p className="mt-2 text-sm text-white/80">
         立ちメニューと詳細レポートを開放して寿命バイバック効率を最大化します。
       </p>
       <div className="mt-4 flex flex-wrap gap-2">
         <button
           type="button"
-          className="rounded-lg bg-[#FF5F1F] px-3 py-2 text-sm font-medium"
+          className="rounded-lg bg-[#F47B2A] px-3 py-2 text-sm font-medium"
           onClick={onBuyMonthly}
         >
           Monthly $4.99

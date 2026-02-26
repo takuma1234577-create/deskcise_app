@@ -7,9 +7,8 @@ const _inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const _geistMono = Geist_Mono({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Dekcize - Blood Flow Recovery for Desk Workers',
-  description:
-    'Turn sedentary risk into lifespan gains. 1 minute of movement buys back 22 minutes of life.',
+  title: "DEKCIZE - 寿命リカバリー・ポモドーロ",
+  description: "25分のデスクワークで失う22分の寿命を、1分の運動で取り戻す。",
   generator: 'v0.app',
   icons: {
     icon: [
@@ -31,7 +30,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#1A1A2E',
+  themeColor: '#173A6A',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,

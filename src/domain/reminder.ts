@@ -30,7 +30,7 @@ export async function triggerSittingReminderIfNeeded(
 
   await scheduler.scheduleAfterMinutes(0, {
     key: SITTING_REMINDER_KEY,
-    title: "Dekcize",
+    title: "DEKCIZE",
     body: "血流をリセットしてください",
   });
 

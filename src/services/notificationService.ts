@@ -147,7 +147,7 @@ export function scheduleTrialMilestoneNotifications(input: {
 
     scheduler.scheduleAt(at, {
       key,
-      title: "Dekcize Trial Update",
+      title: "DEKCIZE 22 Trial Update",
       body,
     });
 

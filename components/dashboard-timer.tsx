@@ -111,7 +111,7 @@ export function DashboardTimer({ onBreakStart, onRequirePro, isProUser }: Dashbo
       {/* Header */}
       <div className="w-full flex items-center justify-between py-4">
         <div>
-          <h1 className="text-lg font-semibold tracking-tight text-foreground">Dekcize</h1>
+          <h1 className="text-lg font-semibold tracking-tight text-orange">DEKCIZE 22</h1>
           <p className="text-xs text-muted-foreground">{'\u96C6\u4E2D\u30BB\u30C3\u30B7\u30E7\u30F3'}</p>
         </div>
         <div className={`flex items-center gap-2 rounded-full px-3 py-1.5 ${statusClassName}`}>
@@ -280,7 +280,7 @@ export function DashboardTimer({ onBreakStart, onRequirePro, isProUser }: Dashbo
           </span>
           <span
             className={`text-sm font-bold tabular-nums ${
-              lifespanRisk > 0 ? "text-[#FF5F1F] animate-pulse-glow" : "text-success"
+              lifespanRisk > 0 ? "text-orange animate-pulse-glow" : "text-success"
             }`}
           >
             {lifespanRisk > 0 ? `-${lifespanRisk}\u5206` : "0\u5206"}
