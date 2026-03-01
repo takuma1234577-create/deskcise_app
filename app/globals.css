@@ -50,7 +50,7 @@
 }
 
 @theme inline {
-  --font-sans: 'Inter', 'Geist', sans-serif;
+  --font-sans: var(--font-noto-sans-jp), 'Inter', 'Geist', sans-serif;
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';
   --color-background: var(--background);
   --color-foreground: var(--foreground);

@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, Geist_Mono } from 'next/font/google'
+import { Geist_Mono, Noto_Sans_JP } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const _inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
+const _notoSansJp = Noto_Sans_JP({ subsets: ['latin'], variable: '--font-noto-sans-jp', weight: ['400', '500', '700'] })
 const _geistMono = Geist_Mono({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -43,7 +43,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="ja">
+    <html lang="ja" className={_notoSansJp.variable}>
       <body className="font-sans antialiased">
         {children}
         <Analytics />
