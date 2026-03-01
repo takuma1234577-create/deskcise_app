@@ -104,7 +104,10 @@ function HomeContent() {
   if (loading) {
     return (
       <main className="mx-auto flex min-h-screen max-w-md items-center justify-center bg-background">
-        <p className="text-sm text-muted-foreground">ログイン状態を確認中...</p>
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-10 w-10 animate-spin rounded-full border-2 border-orange/20 border-t-orange" />
+          <p className="text-xs text-muted-foreground/60">読み込み中...</p>
+        </div>
       </main>
     )
   }
@@ -135,10 +138,10 @@ function HomeContent() {
   }
 
   return (
-    <main className="mx-auto min-h-screen max-w-md bg-background">
-      <div className="pb-20">
+    <main className="mx-auto min-h-screen max-w-md bg-background antialiased">
+      <div className="pb-24">
         {completionMessage && (
-          <div className="mx-4 mt-3 rounded-lg border border-success/40 bg-success-muted px-3 py-2 text-center text-sm font-semibold text-success">
+          <div className="mx-5 mt-3 rounded-2xl border border-success/20 bg-success/10 px-4 py-3 text-center text-sm font-medium text-success animate-fade-in-up">
             {completionMessage}
           </div>
         )}

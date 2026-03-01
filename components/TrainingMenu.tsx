@@ -106,63 +106,67 @@ export function TrainingMenu() {
   const items = useMemo(() => SEATED_TRAINING_DATA, [])
 
   return (
-    <section className="mt-6 w-full rounded-2xl border border-[#2E5FA2] bg-gradient-to-b from-[#1B3F76] to-[#173A6A] p-4 shadow-[0_10px_24px_rgba(15,23,42,0.35)]">
-      <h3 className="text-sm font-semibold text-white">トレーニングメニュー</h3>
-      <p className="mt-1 text-xs text-white/70">座ったまま実施できるメニューのみ表示中</p>
-
-      <div className="mt-3">
-        <span className="inline-flex rounded-lg bg-[#F97316] px-3 py-1.5 text-xs font-semibold text-white">
+    <section className="w-full">
+      <div className="flex items-center gap-2 mb-4">
+        <span className="inline-flex rounded-full bg-orange/10 px-3 py-1.5 text-[10px] font-medium text-orange">
           座ったまま
+        </span>
+        <span className="text-[10px] text-muted-foreground/50">
+          {items.length}種目
         </span>
       </div>
 
-      <div className="mt-4 space-y-2.5">
+      <div className="space-y-3">
         {items.map((item) => {
           const Icon = item.icon
           return (
             <article
               key={item.id}
-              className="rounded-2xl border border-[#3E6FB1] bg-gradient-to-b from-[#203F73] to-[#1A3A6A] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
+              className="glass-card rounded-2xl p-4 transition-all duration-200 active:scale-[0.99]"
             >
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <Icon className="h-4 w-4 text-[#F97316]" />
-                  <p className="text-sm font-semibold text-white">{item.name}</p>
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange/10">
+                    <Icon className="h-5 w-5 text-orange" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-foreground truncate">{item.name}</p>
+                    <div className="flex items-center gap-1.5 mt-0.5">
+                      <Timer className="h-3 w-3 text-muted-foreground/50" />
+                      <span className="text-[10px] text-muted-foreground/70">{item.duration}</span>
+                    </div>
+                  </div>
                 </div>
-                <span className="inline-flex items-center gap-1 rounded-full bg-[#0F172A] px-2 py-1 text-[10px] text-white/80">
-                  <Timer className="h-3 w-3 text-[#F97316]" />
-                  {item.duration}
-                </span>
               </div>
 
-              <div className="mt-2 overflow-hidden rounded-xl border border-[#305C90] bg-[#10213A]">
+              <div className="mt-3 overflow-hidden rounded-xl bg-muted/20">
                 <img
                   src={item.imageSrc}
                   alt={`${item.name} の静止画`}
-                  className="h-40 w-full object-cover"
+                  className="h-36 w-full object-cover"
                   onError={(event) => {
                     event.currentTarget.src = "/placeholder.svg"
                   }}
                 />
               </div>
 
-              <p className="mt-2 text-xs leading-relaxed text-white/75">
+              <p className="mt-3 text-xs leading-relaxed text-muted-foreground/80">
                 {item.description}
               </p>
-              {item.targetMuscles && (
-                <p className="mt-1 text-[11px] text-[#FDBA74]">
-                  ターゲット筋肉: {item.targetMuscles}
-                </p>
-              )}
-              {item.effect && (
-                <p className="mt-1 text-[11px] text-white/70">
-                  効果: {item.effect}
-                </p>
-              )}
-              {item.equipment && (
-                <p className="mt-1 text-[11px] text-white/65">
-                  道具: {item.equipment}
-                </p>
+              
+              {(item.targetMuscles || item.effect) && (
+                <div className="mt-3 pt-3 border-t border-white/5 space-y-1.5">
+                  {item.targetMuscles && (
+                    <p className="text-[10px] text-orange/80">
+                      <span className="text-muted-foreground/50">ターゲット:</span> {item.targetMuscles}
+                    </p>
+                  )}
+                  {item.effect && (
+                    <p className="text-[10px] text-muted-foreground/70">
+                      <span className="text-muted-foreground/50">効果:</span> {item.effect}
+                    </p>
+                  )}
+                </div>
               )}
             </article>
           )

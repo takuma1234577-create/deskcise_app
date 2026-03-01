@@ -113,118 +113,131 @@ export function NotificationSettings() {
   }
 
   return (
-    <section className="mb-3 rounded-xl border border-[#2C4E7E] bg-gradient-to-b from-[#16345F] to-[#132C50] p-4">
-      <p className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-orange">
-        <Bell className="h-3.5 w-3.5" />
-        通知設定
-      </p>
-
-      <div className="mt-2 rounded-lg border border-[#335987] bg-[#0E2340] px-3 py-2">
-        <p className="text-[11px] text-white/75">
-          {meetingModeOn
-            ? `ミーティングモード：通知オフ（残り約${meetingRemaining}分）`
-            : "ミーティングモード：OFF"}
-        </p>
+    <section className="glass-card rounded-2xl p-4 mb-3">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange/10">
+          <Bell className="h-5 w-5 text-orange" />
+        </div>
+        <div>
+          <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70">
+            NOTIFICATIONS
+          </p>
+          <p className="text-sm font-medium text-foreground">
+            通知設定
+          </p>
+        </div>
       </div>
 
-      <div className="mt-3 space-y-3">
-        <div className="flex items-center justify-between rounded-lg border border-[#355C8E] bg-[#15335E] px-3 py-2.5">
+      {meetingModeOn && (
+        <div className="mb-4 rounded-xl bg-orange/10 px-4 py-3">
+          <p className="text-xs font-medium text-orange">
+            ミーティングモード有効 - 残り約{meetingRemaining}分
+          </p>
+        </div>
+      )}
+
+      <div className="space-y-3">
+        {/* Reminder Toggle */}
+        <div className="flex items-center justify-between rounded-xl bg-white/5 px-4 py-3">
           <div>
-            <p className="text-sm font-medium text-white">リマインダー通知</p>
-            <p className="text-[11px] text-white/70">運動タイミングを定期通知</p>
+            <p className="text-sm font-medium text-foreground">リマインダー通知</p>
+            <p className="text-[10px] text-muted-foreground/60 mt-0.5">運動タイミングを定期通知</p>
           </div>
           <button
             type="button"
             onClick={() => void handleToggleEnabled(!settings.enabled)}
-            className={`relative h-6 w-11 rounded-full transition ${
-              settings.enabled ? "bg-[#F97316]" : "bg-[#334155]"
+            className={`relative h-7 w-12 rounded-full transition-all duration-200 ${
+              settings.enabled ? "bg-orange" : "bg-muted/40"
             }`}
             aria-pressed={settings.enabled}
             aria-label="通知トグル"
           >
             <span
-              className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition ${
-                settings.enabled ? "left-5" : "left-0.5"
+              className={`absolute top-1 h-5 w-5 rounded-full bg-white shadow-sm transition-all duration-200 ${
+                settings.enabled ? "left-6" : "left-1"
               }`}
             />
           </button>
         </div>
 
-        <div className="rounded-lg border border-[#355C8E] bg-[#15335E] px-3 py-2.5">
-          <label className="mb-2 inline-flex items-center gap-1.5 text-xs font-medium text-white/85">
-            <Clock3 className="h-3.5 w-3.5 text-orange" />
-            リマインダー間隔
-          </label>
+        {/* Interval Setting */}
+        <div className="rounded-xl bg-white/5 px-4 py-3">
+          <div className="flex items-center gap-2 mb-3">
+            <Clock3 className="h-4 w-4 text-muted-foreground/60" />
+            <span className="text-xs font-medium text-foreground">リマインダー間隔</span>
+          </div>
           <select
             value={settings.preset}
             onChange={(e) => handlePresetChange(e.target.value as ReminderPreset)}
-            className="w-full rounded-md border border-[#3E679A] bg-[#0F2747] px-2.5 py-2 text-sm text-white outline-none"
+            className="w-full rounded-xl bg-muted/30 px-4 py-3 text-sm text-foreground outline-none border-none appearance-none"
           >
             <option value="60m">1時間ごと</option>
             <option value="120m">2時間ごと</option>
             <option value="custom">カスタム</option>
           </select>
           {settings.preset === "custom" && (
-            <div className="mt-2">
+            <div className="mt-3">
               <input
                 type="number"
                 min={15}
                 max={480}
                 value={settings.customMinutes}
                 onChange={(e) => handleCustomMinutesChange(e.target.value)}
-                className="w-full rounded-md border border-[#3E679A] bg-[#0F2747] px-2.5 py-2 text-sm text-white outline-none"
+                className="w-full rounded-xl bg-muted/30 px-4 py-3 text-sm text-foreground outline-none border-none"
               />
-              <p className="mt-1 text-[10px] text-white/65">15〜480分で設定できます</p>
+              <p className="mt-2 text-[10px] text-muted-foreground/50">15〜480分で設定</p>
             </div>
           )}
         </div>
 
-        <div className="flex items-center justify-between rounded-lg border border-[#355C8E] bg-[#15335E] px-3 py-2.5">
+        {/* Sound Toggle */}
+        <div className="flex items-center justify-between rounded-xl bg-white/5 px-4 py-3">
           <div>
-            <p className="inline-flex items-center gap-1.5 text-sm font-medium text-white">
-              <Volume2 className="h-3.5 w-3.5 text-orange" />
-              音声アラーム
-            </p>
-            <p className="text-[11px] text-white/70">通知と同時に短いトーンを再生</p>
+            <div className="flex items-center gap-2">
+              <Volume2 className="h-4 w-4 text-muted-foreground/60" />
+              <p className="text-sm font-medium text-foreground">音声アラーム</p>
+            </div>
+            <p className="text-[10px] text-muted-foreground/60 mt-0.5 ml-6">通知と同時にトーン再生</p>
           </div>
           <button
             type="button"
             onClick={() => setSettings((prev) => ({ ...prev, soundEnabled: !prev.soundEnabled }))}
-            className={`relative h-6 w-11 rounded-full transition ${
-              settings.soundEnabled ? "bg-[#F97316]" : "bg-[#334155]"
+            className={`relative h-7 w-12 rounded-full transition-all duration-200 ${
+              settings.soundEnabled ? "bg-orange" : "bg-muted/40"
             }`}
             aria-pressed={settings.soundEnabled}
             aria-label="音声トグル"
           >
             <span
-              className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition ${
-                settings.soundEnabled ? "left-5" : "left-0.5"
+              className={`absolute top-1 h-5 w-5 rounded-full bg-white shadow-sm transition-all duration-200 ${
+                settings.soundEnabled ? "left-6" : "left-1"
               }`}
             />
           </button>
         </div>
 
-        <div className="rounded-lg border border-[#F97316]/50 bg-[#F97316]/15 p-3">
-          <p className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#FDBA74]">
-            <BriefcaseBusiness className="h-3.5 w-3.5" />
-            ミーティング対応
+        {/* Meeting Mode */}
+        <div className="rounded-xl bg-orange/5 border border-orange/10 p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <BriefcaseBusiness className="h-4 w-4 text-orange" />
+            <p className="text-xs font-medium text-foreground">ミーティングモード</p>
+          </div>
+          <p className="text-[10px] text-muted-foreground/70 leading-relaxed">
+            会議中は通知を1時間停止します
           </p>
-          <p className="mt-1 text-[11px] text-white/75">
-            会議中は通知と音声を止めて、次の運動通知を1時間後に延期します。
-          </p>
-          <div className="mt-2 flex gap-2">
+          <div className="mt-3 flex gap-2">
             <button
               type="button"
               onClick={handleMeetingPause}
-              className="rounded-md bg-[#F97316] px-3 py-2 text-xs font-semibold text-white"
+              className="flex-1 rounded-xl bg-orange px-4 py-2.5 text-xs font-medium text-white transition-all duration-200 active:scale-[0.98]"
             >
-              ミーティング中（1時間停止）
+              1時間停止
             </button>
             {meetingModeOn && (
               <button
                 type="button"
                 onClick={handleExitMeetingMode}
-                className="rounded-md border border-[#3E679A] bg-[#0F2747] px-3 py-2 text-xs font-medium text-white"
+                className="rounded-xl bg-white/10 px-4 py-2.5 text-xs font-medium text-foreground transition-all duration-200 active:scale-[0.98]"
               >
                 解除
               </button>
@@ -233,7 +246,7 @@ export function NotificationSettings() {
         </div>
       </div>
 
-      <p className="mt-2 text-[10px] text-white/65">
+      <p className="mt-4 text-[10px] text-muted-foreground/40 text-center">
         通知権限: {permission === "unsupported" ? "未対応" : permission}
       </p>
     </section>

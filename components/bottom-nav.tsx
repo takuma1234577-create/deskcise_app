@@ -13,17 +13,17 @@ export function BottomNav({ current, onChange }: BottomNavProps) {
   const items: { id: Screen; label: string; icon: React.ReactNode }[] = [
     {
       id: "dashboard",
-      label: "\u30BF\u30A4\u30DE\u30FC",
+      label: "タイマー",
       icon: <Timer className="h-5 w-5" />,
     },
     {
       id: "exercise",
-      label: "エクササイズ",
+      label: "運動",
       icon: <Dumbbell className="h-5 w-5" />,
     },
     {
       id: "report",
-      label: "\u30EC\u30DD\u30FC\u30C8",
+      label: "レポート",
       icon: <BarChart3 className="h-5 w-5" />,
     },
     {
@@ -35,26 +35,37 @@ export function BottomNav({ current, onChange }: BottomNavProps) {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-navy/95 backdrop-blur-md"
-      aria-label="\u30E1\u30A4\u30F3\u30CA\u30D3\u30B2\u30FC\u30B7\u30E7\u30F3"
+      className="fixed bottom-0 left-0 right-0 z-50 glass-effect border-t border-white/5 bg-background/80"
+      aria-label="メインナビゲーション"
     >
-      <div className="mx-auto flex max-w-md items-center justify-around px-4 py-2 pb-[env(safe-area-inset-bottom,8px)]">
-        {items.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => onChange(item.id)}
-            className={`flex flex-col items-center gap-0.5 rounded-lg px-4 py-1.5 transition-colors ${
-              current === item.id
-                ? "text-orange"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-            aria-label={item.label}
-            aria-current={current === item.id ? "page" : undefined}
-          >
-            {item.icon}
-            <span className="text-[10px] font-medium">{item.label}</span>
-          </button>
-        ))}
+      <div className="mx-auto flex max-w-md items-center justify-around px-2 py-1 pb-[max(env(safe-area-inset-bottom),12px)]">
+        {items.map((item) => {
+          const isActive = current === item.id
+          return (
+            <button
+              key={item.id}
+              onClick={() => onChange(item.id)}
+              className={`relative flex flex-col items-center gap-0.5 rounded-xl px-5 py-2 transition-all duration-200 ${
+                isActive
+                  ? "text-orange"
+                  : "text-muted-foreground/60 active:scale-95 hover:text-muted-foreground"
+              }`}
+              aria-label={item.label}
+              aria-current={isActive ? "page" : undefined}
+            >
+              {/* Active indicator */}
+              {isActive && (
+                <div className="absolute -top-1 left-1/2 h-0.5 w-5 -translate-x-1/2 rounded-full bg-orange" />
+              )}
+              <div className={`transition-transform duration-200 ${isActive ? "scale-110" : ""}`}>
+                {item.icon}
+              </div>
+              <span className={`text-[10px] transition-all duration-200 ${isActive ? "font-semibold" : "font-medium"}`}>
+                {item.label}
+              </span>
+            </button>
+          )
+        })}
       </div>
     </nav>
   )
