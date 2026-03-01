@@ -1,8 +1,8 @@
 "use client"
 
-import { Timer, BarChart3, Crown, Settings } from "lucide-react"
+import { Timer, BarChart3, Settings, Dumbbell } from "lucide-react"
 
-export type Screen = "dashboard" | "report" | "paywall" | "settings"
+export type Screen = "dashboard" | "exercise" | "report" | "settings"
 
 interface BottomNavProps {
   current: Screen
@@ -17,14 +17,14 @@ export function BottomNav({ current, onChange }: BottomNavProps) {
       icon: <Timer className="h-5 w-5" />,
     },
     {
+      id: "exercise",
+      label: "エクササイズ",
+      icon: <Dumbbell className="h-5 w-5" />,
+    },
+    {
       id: "report",
       label: "\u30EC\u30DD\u30FC\u30C8",
       icon: <BarChart3 className="h-5 w-5" />,
-    },
-    {
-      id: "paywall",
-      label: "プロ",
-      icon: <Crown className="h-5 w-5" />,
     },
     {
       id: "settings",

@@ -5,7 +5,6 @@ import { Armchair, Play, Pause, RotateCcw, SkipForward, TriangleAlert } from "lu
 import { useLifeBuyback } from "@/src/hooks/useLifeBuyback"
 import { predictLifeLossFromSitting } from "@/src/features/life-buyback/engine/lifeBuybackEngine"
 import type { LifeBuybackMenuType } from "@/src/features/life-buyback"
-import { TrainingMenu } from "@/components/TrainingMenu"
 import { BrandLogo } from "@/components/BrandLogo"
 
 interface DashboardTimerProps {
@@ -101,7 +100,7 @@ export function DashboardTimer({ onBreakStart, isProUser }: DashboardTimerProps)
       {/* Header */}
       <div className="w-full flex items-center justify-between pt-4">
         <div>
-          <BrandLogo wordmarkClassName="text-base" markClassName="h-8 w-8" />
+          <BrandLogo wordmarkClassName="h-10" />
           <p className="mt-0.5 text-[11px] text-slate-400">{'\u96C6\u4E2D\u30BB\u30C3\u30B7\u30E7\u30F3'}</p>
         </div>
         <div className={`flex items-center gap-2 rounded-full px-3 py-1.5 ${statusClassName} border border-white/10`}>
@@ -218,8 +217,6 @@ export function DashboardTimer({ onBreakStart, isProUser }: DashboardTimerProps)
 {'\u9577\u6642\u9593\u306E\u5EA7\u4F4D\u306F\u8840\u6D41\u3092\u4F4E\u4E0B\u3055\u305B\u307E\u3059\u300225\u5206\u306E\u30BB\u30C3\u30B7\u30E7\u30F3\u3067\u7D04\uFF19\u5206\u306E\u30EA\u30B9\u30AF\u304C\u84C4\u7A4D\u3055\u308C\u307E\u3059\u3002'}
         </p>
       </div>
-
-      <TrainingMenu />
     </div>
   )
 }

@@ -5,6 +5,7 @@ import { ChevronDown } from "lucide-react"
 import { useAuth } from "@/src/context/AuthContext"
 import { useSubscription } from "@/src/context/SubscriptionContext"
 import { NotificationSettings } from "@/components/NotificationSettings"
+import { BrandLogo } from "@/components/BrandLogo"
 
 export function SettingsScreen() {
   const [showTerms, setShowTerms] = useState(false)
@@ -17,6 +18,7 @@ export function SettingsScreen() {
   return (
     <div className="flex flex-col px-4 pb-24">
       <div className="py-4">
+        <BrandLogo wordmarkClassName="h-10" />
         <h1 className="text-lg font-semibold text-foreground">設定</h1>
         <p className="text-xs text-muted-foreground">アプリ設定と法的情報</p>
       </div>

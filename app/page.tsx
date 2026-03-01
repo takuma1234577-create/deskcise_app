@@ -3,8 +3,8 @@
 import { useState, useCallback, useEffect } from "react"
 import { DashboardTimer } from "@/components/dashboard-timer"
 import { BreakSession } from "@/components/break-session"
+import { ExerciseScreen } from "@/components/exercise-screen"
 import { ReportScreen } from "@/components/report-screen"
-import { PaywallScreen } from "@/components/paywall-screen"
 import { SettingsScreen } from "@/components/settings-screen"
 import { AuthScreen } from "@/components/auth-screen"
 import { TrialOfferScreen } from "@/components/trial-offer-screen"
@@ -32,7 +32,7 @@ function HomeContent() {
   const [completionMessage, setCompletionMessage] = useState<string | null>(null)
   const [showTrialOffer, setShowTrialOffer] = useState(false)
   const [trialOfferHandled, setTrialOfferHandled] = useState(false)
-  const { subscription, purchasePlan, isProUnlocked, trialStartDate, startTrialOffer } = useSubscription()
+  const { subscription, isProUnlocked, trialStartDate, startTrialOffer } = useSubscription()
   const { user, loading } = useAuth()
 
   const handleBreakStart = useCallback((payload: BreakPayload) => {
@@ -148,16 +148,8 @@ function HomeContent() {
             isProUser={isProUnlocked}
           />
         )}
+        {screen === "exercise" && <ExerciseScreen />}
         {screen === "report" && <ReportScreen />}
-        {screen === "paywall" && (
-          <PaywallScreen
-            onClose={() => setScreen("dashboard")}
-            onUpgrade={() => {
-              purchasePlan("monthly")
-              setScreen("dashboard")
-            }}
-          />
-        )}
         {screen === "settings" && <SettingsScreen />}
       </div>
       <BottomNav current={screen} onChange={setScreen} />

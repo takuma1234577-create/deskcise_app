@@ -11,7 +11,7 @@ export function TrialOfferScreen({ onStartTrial, onSkip }: TrialOfferScreenProps
   return (
     <main className="mx-auto flex min-h-screen max-w-md items-center px-4">
       <section className="w-full rounded-2xl border border-orange/30 bg-secondary p-5">
-        <BrandLogo wordmarkClassName="text-base" markClassName="h-8 w-8" />
+        <BrandLogo wordmarkClassName="h-10" />
         <h1 className="mt-2 text-xl font-bold text-foreground">
           14日間のプロ版を開始しますか？
         </h1>
