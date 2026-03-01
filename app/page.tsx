@@ -146,7 +146,6 @@ function HomeContent() {
           <DashboardTimer
             onBreakStart={handleBreakStart}
             isProUser={isProUnlocked}
-            onRequirePro={() => setScreen("paywall")}
           />
         )}
         {screen === "report" && <ReportScreen />}

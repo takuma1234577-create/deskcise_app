@@ -1,15 +1,12 @@
 "use client"
 
 import { useState, useEffect, useCallback, useRef } from "react"
-import { Play, Pause, RotateCcw, Monitor, Maximize2, Minimize2 } from "lucide-react"
+import { Play, Pause, RotateCcw } from "lucide-react"
 import { useLifeBuyback } from "@/src/hooks/useLifeBuyback"
 import { predictLifeLossFromSitting } from "@/src/features/life-buyback/engine/lifeBuybackEngine"
 import type { LifeBuybackMenuType } from "@/src/features/life-buyback"
 import { TrainingMenu } from "@/components/TrainingMenu"
 import { BrandLogo } from "@/components/BrandLogo"
-
-type DeskSpace = "narrow" | "normal" | "wide"
-type Posture = "sitting" | "standing"
 
 interface DashboardTimerProps {
   onBreakStart: (payload: {
@@ -20,25 +17,16 @@ interface DashboardTimerProps {
       menuType: LifeBuybackMenuType
     }
   }) => void
-  onRequirePro: () => void
   isProUser: boolean
 }
 
-export function DashboardTimer({ onBreakStart, onRequirePro, isProUser }: DashboardTimerProps) {
+export function DashboardTimer({ onBreakStart, isProUser }: DashboardTimerProps) {
   const [timeLeft, setTimeLeft] = useState(25 * 60)
   const [isRunning, setIsRunning] = useState(false)
   const [lifespanRisk, setLifespanRisk] = useState(0)
   const totalTime = 25 * 60
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const lifeBuyback = useLifeBuyback({ hasProAccess: isProUser })
-
-  const deskSpace: DeskSpace =
-    lifeBuyback.environment.deskSize === "compact"
-      ? "narrow"
-      : lifeBuyback.environment.deskSize === "standard"
-        ? "normal"
-        : "wide"
-  const posture: Posture = lifeBuyback.environment.posture
 
   const minutes = Math.floor(timeLeft / 60)
   const seconds = timeLeft % 60
@@ -72,15 +60,21 @@ export function DashboardTimer({ onBreakStart, onRequirePro, isProUser }: Dashbo
       const elapsedSeconds = totalTime - timeLeft
       const elapsedMinutes = elapsedSeconds / 60
       const predicted = predictLifeLossFromSitting(elapsedMinutes)
-      setLifespanRisk(posture === "sitting" ? predicted : 0)
+      setLifespanRisk(predicted)
     } else if (timeLeft === totalTime) {
       setLifespanRisk(0)
     }
-  }, [timeLeft, isRunning, posture, totalTime])
+  }, [timeLeft, isRunning, totalTime])
 
   useEffect(() => {
     lifeBuyback.setHasProAccess(isProUser)
   }, [isProUser, lifeBuyback.setHasProAccess])
+
+  useEffect(() => {
+    // Temporarily lock environment to seated-only UX.
+    lifeBuyback.setPosture("sitting")
+    lifeBuyback.setDeskSize("standard")
+  }, [lifeBuyback.setDeskSize, lifeBuyback.setPosture])
 
   const toggleTimer = useCallback(() => {
     setIsRunning((prev) => !prev)
@@ -91,12 +85,6 @@ export function DashboardTimer({ onBreakStart, onRequirePro, isProUser }: Dashbo
     setTimeLeft(totalTime)
     setLifespanRisk(0)
   }, [totalTime])
-
-  const deskOptions: { value: DeskSpace; label: string; icon: React.ReactNode }[] = [
-    { value: "narrow", label: "狭い", icon: <Minimize2 className="h-3.5 w-3.5" /> },
-    { value: "normal", label: "普通", icon: <Monitor className="h-3.5 w-3.5" /> },
-    { value: "wide", label: "広い", icon: <Maximize2 className="h-3.5 w-3.5" /> },
-  ]
 
   const status: "待機中" | "集中中" | "休憩" =
     timeLeft === 0 ? "休憩" : isRunning ? "集中中" : "待機中"
@@ -165,9 +153,7 @@ export function DashboardTimer({ onBreakStart, onRequirePro, isProUser }: Dashbo
           <span className="text-6xl font-light tracking-tighter text-foreground tabular-nums">
             {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
           </span>
-          <span className="mt-1 text-xs text-muted-foreground">
-            {posture === "sitting" ? "\u5EA7\u308A" : "\u7ACB\u3061"} / {deskSpace === "narrow" ? "\u72ED\u3044" : deskSpace === "normal" ? "\u666E\u901A" : "\u5E83\u3044"}
-          </span>
+          <span className="mt-1 text-xs text-muted-foreground">座り専用モード</span>
         </div>
       </div>
 
@@ -208,70 +194,10 @@ export function DashboardTimer({ onBreakStart, onRequirePro, isProUser }: Dashbo
         </button>
       </div>
 
-      {/* Desk Environment Selector */}
-      <div className="mt-8 w-full">
-        <label className="mb-2 block text-xs font-medium uppercase tracking-wider text-muted-foreground">
-{'\u30C7\u30B9\u30AF\u74B0\u5883'}
-        </label>
-        <div className="flex gap-2">
-          {deskOptions.map((opt) => (
-            <button
-              key={opt.value}
-              onClick={() =>
-                lifeBuyback.setDeskSize(
-                  opt.value === "narrow" ? "compact" : opt.value === "normal" ? "standard" : "wide"
-                )
-              }
-              className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg border py-2.5 text-xs font-medium transition-all ${
-                deskSpace === opt.value
-                  ? "border-orange bg-orange-muted text-orange"
-                  : "border-border bg-secondary text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {opt.icon}
-              {opt.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Posture Toggle */}
-      <div className="mt-4 w-full">
-        <label className="mb-2 block text-xs font-medium uppercase tracking-wider text-muted-foreground">
-{'\u59FF\u52E2'}
-        </label>
-        <div className="flex gap-2">
-          {(["sitting", "standing"] as Posture[]).map((p) => (
-            <button
-              key={p}
-              onClick={() => {
-                if (p === "standing" && !isProUser) {
-                  onRequirePro()
-                  return
-                }
-                lifeBuyback.setPosture(p)
-              }}
-              className={`flex flex-1 items-center justify-center gap-2 rounded-lg border py-2.5 text-xs font-medium transition-all ${
-                posture === p
-                  ? "border-orange bg-orange-muted text-orange"
-                  : "border-border bg-secondary text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {p === "sitting" ? (
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <circle cx="8" cy="3" r="2" fill="currentColor" />
-                  <path d="M6 7H10V11H12V13H10V11H6V13H4V11H6V7Z" fill="currentColor" />
-                </svg>
-              ) : (
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <circle cx="8" cy="2" r="2" fill="currentColor" />
-                  <path d="M7 5H9V10H11V12H9V14H7V12H5V10H7V5Z" fill="currentColor" />
-                </svg>
-              )}
-              {p === "sitting" ? "座り" : "立ち"}
-            </button>
-          ))}
-        </div>
+      <div className="mt-6 w-full rounded-lg border border-border bg-secondary px-3 py-2">
+        <p className="text-xs text-muted-foreground">
+          現在、トレーニングは「座ったまま」メニューのみに最適化されています。
+        </p>
       </div>
 
       {/* Lifespan Risk Gauge */}
