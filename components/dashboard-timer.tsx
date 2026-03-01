@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback, useRef } from "react"
-import { Armchair, Play, Pause, RotateCcw, SkipForward, TriangleAlert } from "lucide-react"
+import { Play, Pause, RotateCcw, SkipForward } from "lucide-react"
 import { useLifeBuyback } from "@/src/hooks/useLifeBuyback"
 import { predictLifeLossFromSitting } from "@/src/features/life-buyback/engine/lifeBuybackEngine"
 import type { LifeBuybackMenuType } from "@/src/features/life-buyback"
@@ -85,37 +85,12 @@ export function DashboardTimer({ onBreakStart, isProUser }: DashboardTimerProps)
     setLifespanRisk(0)
   }, [totalTime])
 
-  const status: "待機中" | "集中中" | "休憩" =
-    timeLeft === 0 ? "休憩" : isRunning ? "集中中" : "待機中"
-
-  const statusClassName =
-    status === "集中中"
-      ? "bg-[#F97316] text-white"
-      : status === "休憩"
-        ? "bg-emerald-500/20 text-emerald-200"
-        : "bg-slate-800 text-slate-300"
-
   return (
     <div className="flex flex-col items-center px-4 pb-8">
       {/* Header */}
-      <div className="w-full flex items-center justify-between pt-4">
+      <div className="w-full flex items-center justify-center pt-4">
         <div>
           <BrandLogo wordmarkClassName="h-10" />
-          <p className="mt-0.5 text-[11px] text-slate-400">{'\u96C6\u4E2D\u30BB\u30C3\u30B7\u30E7\u30F3'}</p>
-        </div>
-        <div className={`flex items-center gap-2 rounded-full px-3 py-1.5 ${statusClassName} border border-white/10`}>
-          <div
-            className={`h-2 w-2 rounded-full ${
-              status === "集中中"
-                ? "bg-white animate-pulse-glow"
-                : status === "休憩"
-                  ? "bg-emerald-300"
-                  : "bg-slate-500"
-            }`}
-          />
-          <span className="text-xs font-medium">
-            {status}
-          </span>
         </div>
       </div>
 
@@ -188,34 +163,6 @@ export function DashboardTimer({ onBreakStart, isProUser }: DashboardTimerProps)
         >
           <SkipForward className="h-4 w-4" />
         </button>
-      </div>
-
-      {/* Unified Status Card */}
-      <div className="mt-5 w-full rounded-2xl border border-slate-700 bg-slate-900/90 p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-slate-200">
-            <Armchair className="h-4 w-4 text-slate-400" />
-            <span className="text-xs font-medium">座り専用モード</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <TriangleAlert className={`h-4 w-4 ${lifespanRisk > 0 ? "text-[#F97316]" : "text-emerald-400"}`} />
-            <span className={`text-sm font-semibold tabular-nums ${lifespanRisk > 0 ? "text-[#F97316]" : "text-emerald-400"}`}>
-              {lifespanRisk > 0 ? `-${lifespanRisk}分` : "0分"}
-            </span>
-          </div>
-        </div>
-        <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-800">
-          <div
-            className="h-full rounded-full bg-[#F97316] transition-all duration-1000 ease-linear"
-            style={{
-              width: `${Math.min((lifespanRisk / 9) * 100, 100)}%`,
-              boxShadow: lifespanRisk > 0 ? "0 0 10px rgba(249, 115, 22, 0.45)" : "none",
-            }}
-          />
-        </div>
-        <p className="mt-2 text-[10px] text-slate-500 leading-relaxed">
-{'\u9577\u6642\u9593\u306E\u5EA7\u4F4D\u306F\u8840\u6D41\u3092\u4F4E\u4E0B\u3055\u305B\u307E\u3059\u300225\u5206\u306E\u30BB\u30C3\u30B7\u30E7\u30F3\u3067\u7D04\uFF19\u5206\u306E\u30EA\u30B9\u30AF\u304C\u84C4\u7A4D\u3055\u308C\u307E\u3059\u3002'}
-        </p>
       </div>
     </div>
   )
